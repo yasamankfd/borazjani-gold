@@ -2,6 +2,8 @@
 
 namespace App\Events;
 
+use App\Models\Products;
+use App\Models\Setting;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -9,28 +11,33 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class MessageNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
-    public $test = 123;
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct($message)
+    public $market_status;
+    public $type;
+
+    public $products;
+
+
+    public function __construct($type)
     {
-        $this->message = $message;
+        if($type=="market_price")
+        {
+            $products = response()->json(Products::select("id","buy_price","sell_price","status")->get());
+            $this->products = $products;
+        }else{
+             $this->market_status = response()->json(Setting::where("s_key","market_status")->value("s_value"));
+        }
+        $this->type = $type;
+
+//        Log::debug($products);
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
+
     public function broadcastOn()
     {
         return new Channel('notification');
