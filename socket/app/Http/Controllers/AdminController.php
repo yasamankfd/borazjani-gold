@@ -33,7 +33,8 @@ class AdminController extends Controller
     }
     public function marketChange($status)
     {
-//        Log::debug($status);
+        Log::debug($status);
+
         $market  =  Setting::where("s_key","market_status");
         $market->update([
            "s_value" => $status,

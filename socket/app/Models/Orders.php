@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Orders extends Model
 {
     use HasFactory;
-    protected $table = 'market';
+    protected $table = 'temp_order';
+    public const TYPE_SELL = "sell";
+    public const TYPE_BUY = "buy";
 
     protected $fillable=[
-        "amount","fee","total","time","status","type","user_id","product_id",
+        "value","fee","total_price","status","type","user_id","product_id",
     ];
 
 }

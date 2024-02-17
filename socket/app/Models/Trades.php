@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Trades extends Model
 {
     use HasFactory;
-    protected $table = 'trade';
+    protected $table = 'order';
 
     protected $fillable=[
         "amount","fee","total","time","number","type","user_id","product_id",

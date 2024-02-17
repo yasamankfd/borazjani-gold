@@ -4885,26 +4885,42 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1__["default"]({
     var a = 1;
     Echo.channel('notification').listen('MessageNotification', function (e) {
       if (e.type === "market_price") {
+        // if(window.location.href.includes('orders'))
         e.products.original.forEach(function (product) {
           console.log(product);
           document.getElementById('buy_price_' + product.id).innerText = product.buy_price;
           document.getElementById('sell_price_' + product.id).innerText = product.sell_price;
-          var label_status = document.getElementsByClassName("product_status_label");
+          var label_status = document.getElementById("label_price_" + product.id);
           label_status.textContent = product.status === 1 ? "داریم" : "فعلا نداریم";
+          var button_status = document.getElementById("button_price_" + product.id);
+          console.log(button_status);
+          // button_status.disabled = (product.status === 1) || (e.market_status==="open") ?  false : true ;
+          console.log(e.market_status.original);
+          console.log(product.status);
+          if (e.market_status.original === "open") {
+            if (product.status === 1) {
+              button_status.disabled = false;
+            } else button_status.disabled = true;
+          } else button_status.disabled = true;
         });
       } else {
-        var buttonList = document.getElementsByClassName("btn-status");
-        var market_status_label = document.getElementById("market_label");
-        var status = e.market_status.original !== "open";
-        var label_status = e.market_status.original === "open" ? "وضعیت بازار : باز" : "وضعیت بازار : بسته";
+        if (window.location.href.includes('order')) {
+          var temp_order_submit_button = document.getElementById("submit_temp_order");
+          var market_status = e.market_status.original !== "open";
+          temp_order_submit_button.disabled = market_status;
+        } else {
+          var buttonList = document.getElementsByClassName("btn-status");
+          var market_status_label = document.getElementById("market_label");
+          var status = e.market_status.original !== "open";
+          var label_status = e.market_status.original === "open" ? "وضعیت بازار : باز" : "وضعیت بازار : بسته";
+          console.log(e.market_status);
+          // console.log(status)
 
-        // console.log(e.market_status);
-        // console.log(status)
-
-        Array.from(buttonList).forEach(function (button) {
-          button.disabled = status;
-        });
-        market_status_label.textContent = label_status;
+          Array.from(buttonList).forEach(function (button) {
+            button.disabled = status;
+          });
+          market_status_label.textContent = label_status;
+        }
       }
     });
   }

@@ -9,72 +9,60 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>Customer</title>
 </head>
-<body onload="init_market({{ $market }})">
+<body>
 <div id="app">
     <div class="container mt-5 mb-5">
-        <button class="btn btn-success btn-status">Buy</button>
-        <button class="btn btn-danger btn-status">Sell</button>
+        <button onclick="change_operation('buy',{{ $product->buy_price }},{{ $product->sell_price }})" style="width: 400px" class="btn btn-success">Buy</button>
+        <button onclick="change_operation('sell',{{ $product->buy_price }},{{ $product->sell_price }})" style="width: 400px" class="btn btn-danger">Sell</button>
         <div>
-            <div class="mt-5">
-                <label for="dropdown"> محصول را انتخاب کنید:</label>
-                <select name="dropdown" class="form-control">
-                    @foreach($products as $item)
-                        <option value="{{ $item->id }}">{{ $item->title }}</option>
-                    @endforeach
-                </select>
-            </div>
+            <label style="background-color: lightblue" id="operation_label">@if($type == "buy") عملیات خرید @else عملیات فروش @endif</label>
+        </div>
+        <form action="{{ route('save-temp-order') }}" method="POST">
+            @csrf
+            @method("POST")
+            <div>
+                <div class="mt-5">
+                    <label disabled="" for="dropdown"> محصول را انتخاب کنید:</label>
+                    <select disabled name="dropdown" class="form-control" >
+                        @foreach($products as $item)
+                            <option value="{{ $item->id }}">{{ $item->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <input type="hidden" id="product_id" name="product_id" value="{{ $product->id }}">
+                <input type="hidden" id="product_fee" name="product_fee" value="@if($type=="buy") {{ $product->buy_price }} @else {{ $product->sell_price }} @endif">
+                <input type="hidden" id="operation_type" name="operation_type" value="{{ $type }}">
 
-            <div class="m-lg-2">
-                <label> مبلغ:</label>
-                <input id="price" name="price">
-                <label>تومان</label>
-
-            </div>
-            <div class="m-lg-2">
-                <label>مقدار:</label>
-                <input id="amount" name="amount">
-                <label>گرم</label>
-
+                <div class="m-lg-2">
+                    <label> مبلغ:</label>
+                    <input onchange="cal_price_by_price()" id="input_price" name="input_price">
+                    <label>تومان</label>
+                </div>
+                <div class="m-lg-2">
+                    <label>مقدار:</label>
+                    <input onchange="cal_price_by_amount()" id="amount" name="amount" >
+                    <label>گرم</label>
+                </div>
+                <div>
+                    <div>
+                        <label id="price">@if($type=="buy") {{ $product->buy_price }} @else {{ $product->sell_price }} @endif : </label>
+                        <label>فی</label>
+                    </div>
+                    <div>
+                        <label id="total_price"></label>
+                        <label> : مجموع معامله</label>
+                    </div>
+                </div>
             </div>
             <div>
-                <label>گرم</label>
-                <label>گرم</label>
-
+                <button name="submit_temp_order" id="submit_temp_order" style="width: 300px" class="btn btn-success">@if($type == "buy")  خرید @else  فروش @endif</button>
             </div>
-
-        </div>
+        </form>
     </div>
+
+
 </div>
-<script>
-    function init_market(status) {
-
-        var buttonList = document.getElementsByClassName("btn-status");
-        let s = null;
-        if(status==="open")
-        {
-            s = false;
-        }else s = true;
-        Array.from(buttonList).forEach(function(button) {
-            button.disabled = s;
-        });
-    }
-
-
-</script>
 <script src="{{ asset('js/app.js') }}"></script>
-<script>
-    function init_market(status) {
-
-        var buttonList = document.getElementsById("btn-status");
-        let s = null;
-        if(status==="open")
-        {
-            s = false;
-        }else s = true;
-        Array.from(buttonList).forEach(function(button) {
-            button.disabled = s;
-        });
-    }
-</script>
+<script src="{{ asset('js/order_page.js') }}"></script>
 </body>
 </html>

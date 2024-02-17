@@ -77,7 +77,8 @@
             }
         });
     }
-    function change_status() {
+    function change_market_status() {
+        console.log('blade')
         let status = "";
         var checkbox = document.getElementById("market_status");
         // Perform actions based on the checkbox state

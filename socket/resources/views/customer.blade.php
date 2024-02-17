@@ -34,8 +34,9 @@
                     <td id={{"buy_price_".$item->id}}>{{ $item->buy_price }}</td>
                     <td id={{"sell_price_".$item->id}}>{{ $item->sell_price }}</td>
                     <td>
-                        <button onclick="open_buy_page({{ $item->id }})" class="btn btn-success btn-status @if($market=="closed" || $item->status=='0') disabled @endif">معامله</button>
-                        <label class="product_status_label"> @if($item->status=='1')داریم@else فعلا نداریم @endif</label>
+                        <button id={{"button_price_".$item->id}} onclick="open_buy_page({{ $item->id }},'buy')" class="btn btn-success btn-status @if($market=="closed" || $item->status=='0') disabled @endif ">خرید</button>
+                        <button id={{"button_price_".$item->id}} onclick="open_buy_page({{ $item->id }},'sell')" class="btn btn-danger btn-status @if($market=="closed" || $item->status=='0') disabled @endif ">فروش</button>
+                        <label id={{"label_price_".$item->id}} class="product_status_label"> @if($item->status=='1')داریم@else فعلا نداریم @endif</label>
                     </td>
                 </tr>
                 @endforeach
@@ -45,12 +46,10 @@
     </div>
 </div>
 <script>
-    function open_buy_page(product_id)
+    function open_buy_page(product_id,type)
     {
-        window.open('order/'+product_id);
+        window.open('order/'+product_id+"/"+type);
     }
-
-
 </script>
 <script src="{{ asset('js/app.js') }}"></script>
 </body>

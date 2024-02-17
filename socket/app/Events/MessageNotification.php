@@ -27,6 +27,7 @@ class MessageNotification implements ShouldBroadcast
     {
         if($type=="market_price")
         {
+            $this->market_status = response()->json(Setting::where("s_key","market_status")->value("s_value"));
             $products = response()->json(Products::select("id","buy_price","sell_price","status")->get());
             $this->products = $products;
         }else{
