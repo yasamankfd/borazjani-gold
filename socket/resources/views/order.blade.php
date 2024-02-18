@@ -17,6 +17,8 @@
         <div>
             <label style="background-color: lightblue" id="operation_label">@if($type == "buy") عملیات خرید @else عملیات فروش @endif</label>
         </div>
+        <input onchange="change_fee()" type="hidden" id="product_buy_price" name="product_buy_price" value="{{ $product->buy_price }}">
+        <input onchange="change_fee()" type="hidden" id="product_sell_price" name="product_sell_price" value="{{ $product->sell_price }}">
         <form action="{{ route('save-temp-order') }}" method="POST">
             @csrf
             @method("POST")
@@ -29,24 +31,34 @@
                         @endforeach
                     </select>
                 </div>
+                <label> : محصول</label>
+                <label>{{ $product->id }}</label>
                 <input type="hidden" id="product_id" name="product_id" value="{{ $product->id }}">
                 <input type="hidden" id="product_fee" name="product_fee" value="@if($type=="buy") {{ $product->buy_price }} @else {{ $product->sell_price }} @endif">
                 <input type="hidden" id="operation_type" name="operation_type" value="{{ $type }}">
+                <input type="hidden" id="user_id" name="user_id" value="{{ $user_id }}">
+
 
                 <div class="m-lg-2">
                     <label> مبلغ:</label>
-                    <input onchange="cal_price_by_price()" id="input_price" name="input_price">
+                    <input onkeyup="cal_price_by_price()" id="input_price" name="input_price">
                     <label>تومان</label>
                 </div>
                 <div class="m-lg-2">
                     <label>مقدار:</label>
-                    <input onchange="cal_price_by_amount()" id="amount" name="amount" >
+                    <input onkeyup="cal_price_by_amount()" id="amount" name="amount" >
                     <label>گرم</label>
                 </div>
                 <div>
                     <div>
-                        <label id="price">@if($type=="buy") {{ $product->buy_price }} @else {{ $product->sell_price }} @endif : </label>
-                        <label>فی</label>
+                            <div @if($type == 'sell') hidden  @endif id="buy_section">
+                                <label id="buy_price">{{ $product->buy_price }} : </label>
+                                <label>فی</label>
+                            </div>
+                            <div @if($type == 'buy') hidden  @endif id="sell_section">
+                                <label id="sell_price">{{ $product->sell_price }} : </label>
+                                <label>فی</label>
+                            </div>
                     </div>
                     <div>
                         <label id="total_price"></label>

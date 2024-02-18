@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerOrdersController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RefreshData;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,8 @@ Route::get('/market-status/{status}',[AdminController::class,'marketChange']);
 Route::get('/product-status/{product}/{status}',[AdminController::class,'productChange']);
 
 Route::get('/update', [RefreshData::class,'getUpdatedData']);
+Route::get('/customer-orders/{user_id}', [CustomerOrdersController::class,'index'])->name('customer-orders');
+
 
 Route::get('/order/{product}/{type}',[OrderController::class,'index']);
 Route::post('/order',[OrderController::class,'store'])->name('save-temp-order');

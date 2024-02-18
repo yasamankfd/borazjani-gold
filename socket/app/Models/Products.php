@@ -16,4 +16,8 @@ class Products extends Model
         "title","buy_price","sell_price","status","unit"
     ];
 
+    public function order()
+    {
+        return $this->belongsTo(Orders::class, 'product_id');
+    }
 }

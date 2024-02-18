@@ -61,6 +61,11 @@ input:checked + .slider:before {
     grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
     gap: 8px; /* Adjust the gap between cells */
 }
+.table-container2 {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Adjust the number of columns as needed */
+    gap: 8px; /* Adjust the gap between cells */
+}
 
 .table-cell {
     border: 1px solid #ddd;

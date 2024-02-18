@@ -51,10 +51,21 @@
                 <button class="btn btn-dark">Edit</button>
         </div>
     </form>
+</div>
+<div>
+    <table>
+        <thead>
+            <tr>نام محصول</tr>
+            <tr>نام محصول</tr>
+            <tr>نام محصول</tr>
 
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
 <script>
     function change_product_status(product_id){
         let status = "";
