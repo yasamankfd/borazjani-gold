@@ -1,0 +1,138 @@
+@extends('layout.customer')
+@section('page_title')
+    سفارشات
+@endsection
+
+@section('content')
+<div id="app">
+    <!-- ------------------- نمایش وضعیت بازار -----------------------  -->
+    <div class="w-full flex justify-center border-b pb-3">
+                <span id="market_status_span_color" class="@if($market=="open") bg-colorfourth1 @else bg-colorthird1 @endif py-2 px-5 rounded-lg text-white relative animate-pulse text-lg">
+                        <span class="font-extralight">وضعیت بازار:</span>
+                        <span id="market_status_span">@if($market=="open") باز@else بسته @endif</span>
+                    </span>
+    </div>
+    <!-- -------------------------- نمایش اطلاعیه ---------------------------  -->
+    <div class="w-full flex justify-start bg-[#FFE9E9] border border-[#FF7B7B] rounded-2xl p-1 mt-3">
+                    <span class=" py-2 px-5 text-colorprimary text-lg">
+                        <span class="relative flex gap-2">
+                            <img src="{{ url("/img/notify-icon.svg")}}" alt="">
+                            <span class="text-sm md:text-base">اطلاعیه</span>
+
+                            <span class="bg-colorprimary w-40 md:w-52  h-[1px] absolute -bottom-2"></span>
+                            <span class="bg-colorsecondry1 w-10 h-[3px] absolute -bottom-2"></span>
+                        </span>
+                        <p class="mt-3 font-extralight text-sm md:text-lg leading-6 md:leading-7 text-justify">
+                            همکاران محترم جا به جایی معاملات طلا و سکه به صورت نقدی می باشد و تمامی جا به جای ها روز چهار شنبه انجام میشود مشتریان موظف به جابجایی پول و طلا می باشند. در صورت بروز هرگونه مشکلی میتوانید با شماره های 09177880020 و 09382332648 تماس بگیرید .
+                        </p>
+                    </span>
+    </div>
+
+    <div class="w-full flex justify-start bg-white border border-slate-200 rounded-2xl p-1 mt-3">
+                    <span class=" py-2 px-5 text-colorprimary text-lg w-full">
+                        <span class="relative flex gap-2">
+                            <img src="{{ url("/img/product-icon.svg")}}" alt="">
+                            <span class="text-sm md:text-base">لیست سفارشات جاری </span>
+
+                            <span class="bg-colorprimary w-40 md:w-52 h-[1px] absolute -bottom-2"></span>
+                            <span class="bg-colorsecondry1 w-10 h-[3px] absolute -bottom-2"></span>
+                        </span>
+                        <div class="gap-2 rounded-xl mt-5 pb-10">
+                            <!-- ---------------------- جدول سفارشات جاری  ---------------------  -->
+                              <table x-data="{ detailrow:false }" class="space-y-3 block overflow-x-auto pb-5">
+                                  <thead class="w-full flex">
+                                      <tr class="flex justify-between items-center w-fit md:w-full bg-slate-100 font-normal px-1 md:px-5 py-3 rounded-lg hover:shadow-gray-200/50 hover:shadow-lg text-xs lg:text-sm">
+                                          <td class="border-l pl-5  md:w-[20%] text-center w-36 min-w-fit">نام محصول</td>
+                                          <td class="w-36 md:w-[15%] text-center border-l min-w-fit">
+                                            <span>مقدار</span>
+                                          <td class="w-36 md:w-[20%] text-center border-l min-w-fit">
+                                            <span>فی</span>
+                                            <span class="text-gray-400 font-extralight">(ریال)</span>
+                                          </td>
+                                          <td class="w-36 md:w-[20%] text-center">
+                                            <span>مجموع</span>
+                                            <span class="text-gray-400 font-extralight">(ریال)</span>
+                                          </td>
+                                          <td class="w-36 md:w-[15%] text-center border-r">
+                                            <span>نوع معامله</span>
+                                          </td>
+                                          <td class="w-36 md:w-[15%] text-center border-r">
+                                            <span>ساعت</span>
+                                          </td>
+                                          <td class="flex w-36 md:w-[10%]  justify-center items-center gap-2 border-r pr-1">
+                                              <span class="w-full text-center">عملیات</span>
+                                          </td>
+                                      </tr>
+                                  </thead>
+                                  <tbody x-data="{ detailrow:false }" class="space-y-1 w-full flex flex-col ">
+                                  @foreach($orders  as $item)
+                                      <tr class="flex flex-row justify-between items-center bg-slate-100 w-fit md:w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative text-colorprimary/70">
+                                          <td class="border-l pl-5  md:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm">طلا آبشده</td>
+                                          <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal tracking-tight text-base">
+                                            <span>{{ $item->value }}</span>
+                                            <span class="text-gray-400 font-extralight">گرم</span>
+                                          </td>
+                                          <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->fee }}</td>
+                                          <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->total_price }}</td>
+                                          <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-light tracking-tight text-sm flex gap-1 justify-center">
+                                            <span class=" @if($item->type == "sell") bg-colorthird1 @else bg-colorfourth1 @endif  px-4 py-2 w-full text-white rounded-full flex max-w-fit">
+                                                @if($item->type == "sell")
+                                                    فروش
+                                                @else
+                                                    خرید
+                                                @endif
+                                              </span>
+                                          </td>
+                                          <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->created_at->format('H:i:s') }}</td>
+                                          <td class="oneLine w-36 md:w-[10%] flex gap-1 justify-center">
+                                              <label class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base hidden " >{{ $item->status }}</label>
+                                              <p id="countdown_{{$item->id}}"> <span id="countdownValue_{{$item->id}}"></span> ثانیه </p>
+
+                                          </td>
+                                      </tr>
+                                  @endforeach
+                                  </tbody>
+                              </table>
+                        </div>
+                    </span>
+    </div>
+</div>
+@endsection
+
+@section('scripts')
+<script src="{{ url("/js/menutoggle.js")}}"></script>
+<script src="{{ url("/js/menu-toggle.js")}}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    function startCountdown(time , id) {
+        now = new Date().getTime();
+        created = new Date(time).getTime();
+        let seconds = Number(((created + 120000) - now)/1000).toFixed(0) ;
+        // console.log(seconds)
+        // console.log(id)
+        var countdownValue = document.getElementById('countdownValue_'+id);
+        var countdown = document.getElementById('countdown_'+id);
+        if(seconds < 0)
+        {
+            countdownValue.innerText = '';
+            countdown.innerText = 'درخواست مجدد';
+        }
+        if(seconds >= 0 ){
+            var interval = setInterval(function () {
+                countdownValue.innerText = seconds;
+                seconds--;
+
+                if (seconds < 0) {
+                    clearInterval(interval);
+                    countdownValue.innerText = '0';
+                }
+            }, 1000);
+        }
+    }
+    @foreach($orders as $item)
+    startCountdown("{{ $item->created_at }}", "{{ $item->id }}");
+    @endforeach
+</script>
+@endsection
+
