@@ -1,0 +1,81 @@
+@font-face {
+    font-family: yekan;
+    src: url(../font/YekanBakh-Light.ttf);
+    font-weight: 100;
+    font-style: normal ;
+}
+
+@font-face {
+    font-family: yekan;
+    src: url(../font/YekanBakhFaNum-Regular-eco.ttf);
+    font-weight: 200;
+    font-style: normal ;
+}
+
+@font-face {
+    font-family: yekan;
+    src: url(../font/YekanBakh-Medium.ttf);
+    font-weight: 300;
+    font-style: normal ;
+}
+
+@font-face {
+    font-family: yekan;
+    src: url(../font/YekanBakh-Bold.ttf);
+    font-weight: 400;
+    font-style: normal ;
+}
+
+@font-face {
+    font-family: yekan;
+    src: url(../font/YekanBakh-Heavy.ttf);
+    font-weight: 500;
+    font-style: normal ;
+}
+
+@font-face {
+    font-family: yekan;
+    src: url(../font/YekanBakh-ExtraBlack.ttf);
+    font-weight: 600;
+    font-style: normal ;
+}
+@font-face {
+    font-family: yekan;
+    src: url(../font/YekanBakhFaNum-Bold.ttf);
+    font-weight: 700;
+    font-style: normal ;
+}
+@font-face {
+    font-family: yekan;
+    src: url(../font/YekanBakh-Regular.ttf);
+    font-weight: 800;
+    font-style: normal ;
+}
+
+@font-face {
+    font-family: iransans;
+    src: url(../IRANSans_UltraLight.ttf);
+    font-weight: 100;
+    font-style: normal ;
+}
+
+@font-face {
+    font-family: iransans;
+    src: url(../font/IRANSans_Light.ttf);
+    font-weight: 200;
+    font-style: normal ;
+}
+
+@font-face {
+    font-family: iransans;
+    src: url(../font/IRANSans_Medium.ttf);
+    font-weight: 300;
+    font-style: normal ;
+}
+
+@font-face {
+    font-family: iransans;
+    src: url(../font/IRANSans_Bold.ttf);
+    font-weight: 400;
+    font-style: normal ;
+}
