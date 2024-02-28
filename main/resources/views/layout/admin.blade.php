@@ -31,7 +31,7 @@
             <a href="#" x-show="information" x-transition.duration.300ms class="relative block text-start whitespace-nowrap font-yekan text-xs hover:scale-105 transition-all pr-14  py-3">تعریف محصول</a>
         </li>
         <li :class="managemarket ? 'bg-colorsecondry1' : 'bg-transparent'" class="pr-5 relative group">
-            <a @click="dashboard=false, information=false, managemarket=true, orders=false, transaction=false, customer=false,users=false, setting=false, profile=false" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
+            <a href="{{ route("market-change")}}" @click="dashboard=false, information=false, managemarket=true, orders=false, transaction=false, customer=false,users=false, setting=false, profile=false" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
                 <span class="icon relative block text-center">
                     <img src="{{ url("/img/managemarket-icon.svg")}}" alt="" class="">
                 </span>

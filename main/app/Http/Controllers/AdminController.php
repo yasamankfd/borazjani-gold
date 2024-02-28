@@ -21,6 +21,15 @@ class AdminController extends Controller
         return view('dashboard_admin' , compact('products','market','orders'));
     }
 
+    public function showMarketChange()
+    {
+        $products = Products::all();
+        $market  =  Setting::where("s_key","market_status")->value('s_value');
+        $orders = Orders::all();
+
+        return view('admin_market_change' , compact('products','market','orders'));
+    }
+
     public function singleProductChange(Request $request)
     {
         Log::debug($request);

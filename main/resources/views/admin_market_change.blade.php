@@ -1,25 +1,10 @@
 @extends("layout.admin")
+@include("includes.header")
 @section("title")
-    admin
+    تغییر بازار
 @endsection
-@section('content')
-    <div class="flex justify-center gap-2 mt-5">
-        <a class="relative flex flex-col justify-around gap-2 rounded-2xl py-7 px-7 cursor-pointer bg-white">
-            <span class="text-5xl text-center">26</span>
-            <span class="text-xs md:text-sm">تعداد معاملات</span>
 
-            <span class="bg-colorprimary w-20 h-[1px] absolute bottom-14"></span>
-            <span class="bg-colorsecondry1 h-[3px] absolute bottom-14 w-9"></span>
-        </a>
-        <a class="relative flex flex-col justify-around gap-2 rounded-2xl py-7 px-7 cursor-pointer bg-white">
-            <span class="text-5xl text-center">26</span>
-            <span class="text-xs md:text-sm">درخواست ها</span>
-
-            <span class="bg-colorprimary w-20 h-[1px] absolute bottom-14"></span>
-            <span class="bg-colorsecondry1 h-[3px] absolute bottom-14 w-9"></span>
-        </a>
-    </div>
-
+@section("content")
     <div class="w-full flex justify-start bg-white border border-slate-200 rounded-2xl p-1 mt-3">
                     <span class=" py-2 px-2 text-colorprimary text-lg w-full">
                         <span class="relative flex gap-2">
@@ -114,12 +99,12 @@
 
             <!-- ردیف اول  -->
             <input class="hidden" id="modal_product_id">
-                <span class="flex flex-col items-center sm:flex-row gap-2">
+            <span class="flex flex-col items-center sm:flex-row gap-2">
                 <span class="w-full flex flex-col lg:flex-row gap-2">
                     <label id="title_modal" class="flex gap-2 items-center justify-center cursor-pointer"></label>
                 </span>
             </span>
-                <span class="flex flex-col items-center sm:flex-row gap-2">
+            <span class="flex flex-col items-center sm:flex-row gap-2">
                 <span class="w-full flex flex-col lg:flex-row gap-2">
                     <span class="w-full lg:w-1/2">
                         <span class="pr-5 font-light text-sm">قیمت خرید</span>
@@ -136,8 +121,8 @@
                 </span>
             </span>
 
-                <!-- ردیف دوم  -->
-                <span class="flex flex-col sm:flex-row gap-2">
+            <!-- ردیف دوم  -->
+            <span class="flex flex-col sm:flex-row gap-2">
                     <span class="w-full flex flex-col items-center jus lg:flex-row gap-2">
                         <span class="w-full lg:w-1/2">
                             <span class="pr-5 font-light text-sm">قیمت فروش</span>
@@ -154,137 +139,139 @@
                     </span>
                 </span>
 
-                <div class="flex flex-col sm:flex-row justify-end gap-2 mt-3 w-full">
-                    <form action="{{ route("product-edit")}}" id="edit_product_modal" method="POST">
-                        @csrf
-                    </form>
+            <div class="flex flex-col sm:flex-row justify-end gap-2 mt-3 w-full">
+                <form action="{{ route("product-edit")}}" id="edit_product_modal" method="POST">
+                    @csrf
+                </form>
 
-                    <button onclick="submit_form(1 , 2)" class="min-w-[100px] text-center bg-colorsecondry1 text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm">ویرایش</button>
-                    <button onclick="closeModal()" class="min-w-[100px] bg-colorprimary text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm text-center">بازگشت</button>
-                </div>
+                <button onclick="submit_form(1 , 2)" class="min-w-[100px] text-center bg-colorsecondry1 text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm">ویرایش</button>
+                <button onclick="closeModal()" class="min-w-[100px] bg-colorprimary text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm text-center">بازگشت</button>
+            </div>
         </div>
     </div>
 
 
 @endsection
-@section('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        function submit_form(product_id , type) {
-            // Get form data
-            let formData = new FormData(document.getElementById('edit_product'));
-            if (type === 2)
-            {
-                product_id = document.getElementById("modal_product_id").value;
-                console.log(product_id)
-                var buy_status_checkbox = document.getElementById("buy_status_modal");
-                var sell_status_checkbox = document.getElementById("sell_status_modal");
-                var buy_price = document.getElementById("buy_price_modal").value;
-                var sell_price = document.getElementById("sell_price_modal").value;
-
-                var buy_status = buy_status_checkbox.checked === true ? 1 : 0 ;
-                var sell_status = sell_status_checkbox.checked === true ? 1 : 0 ;
-
-                // Append additional parameters
-            }else{
-                formData = new FormData(document.getElementById('edit_product'));
-                var buy_status_checkbox = document.getElementById("product_buy_status_"+product_id);
-                var sell_status_checkbox = document.getElementById("product_sell_status_"+product_id);
-                var buy_price = document.getElementById("buy_price_"+product_id).value;
-                var sell_price = document.getElementById("sell_price_"+product_id).value;
-
-
-                var buy_status = buy_status_checkbox.checked === true ? 1 : 0 ;
-                var sell_status = sell_status_checkbox.checked === true ? 1 : 0 ;
-
-            }
-            formData.append('buy_status', buy_status);
-            formData.append('sell_status', sell_status);
-            formData.append('buy_price', buy_price);
-            formData.append('sell_price', sell_price);
-            formData.append('product_id', product_id);
-
-            // Make an Ajax request using Fetch API
-            fetch('product-edit', {
-                method: 'POST',
-                body: formData,
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // Handle the response data
-                    console.log(JSON.stringify(data));
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
-        function change_market_status()
+@section("scripts")
+<script src="{{ url("/js/select-searchable.js")}}"></script>
+<script src="{{ url("/js/menutoggle.js")}}"></script>
+<script src="{{ url("/js/menu-toggle.js")}}"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    function submit_form(product_id , type) {
+        // Get form data
+        let formData = new FormData(document.getElementById('edit_product'));
+        if (type === 2)
         {
-            console.log('blade')
-            let status = "";
-            var checkbox = document.getElementById("market_status");
-            // Perform actions based on the checkbox state
-            if (checkbox.checked) {
-                status = "open";
-                // Add your custom logic for when the switch is ON
-            } else {
-                status = "closed";
-                // Add your custom logic for when the switch is OFF
+            product_id = document.getElementById("modal_product_id").value;
+            console.log(product_id)
+            var buy_status_checkbox = document.getElementById("buy_status_modal");
+            var sell_status_checkbox = document.getElementById("sell_status_modal");
+            var buy_price = document.getElementById("buy_price_modal").value;
+            var sell_price = document.getElementById("sell_price_modal").value;
+
+            var buy_status = buy_status_checkbox.checked === true ? 1 : 0 ;
+            var sell_status = sell_status_checkbox.checked === true ? 1 : 0 ;
+
+            // Append additional parameters
+        }else{
+            formData = new FormData(document.getElementById('edit_product'));
+            var buy_status_checkbox = document.getElementById("product_buy_status_"+product_id);
+            var sell_status_checkbox = document.getElementById("product_sell_status_"+product_id);
+            var buy_price = document.getElementById("buy_price_"+product_id).value;
+            var sell_price = document.getElementById("sell_price_"+product_id).value;
+
+
+            var buy_status = buy_status_checkbox.checked === true ? 1 : 0 ;
+            var sell_status = sell_status_checkbox.checked === true ? 1 : 0 ;
+
+        }
+        formData.append('buy_status', buy_status);
+        formData.append('sell_status', sell_status);
+        formData.append('buy_price', buy_price);
+        formData.append('sell_price', sell_price);
+        formData.append('product_id', product_id);
+
+        // Make an Ajax request using Fetch API
+        fetch('product-edit', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data
+                console.log(JSON.stringify(data));
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function change_market_status()
+    {
+        console.log('blade')
+        let status = "";
+        var checkbox = document.getElementById("market_status");
+        // Perform actions based on the checkbox state
+        if (checkbox.checked) {
+            status = "open";
+            // Add your custom logic for when the switch is ON
+        } else {
+            status = "closed";
+            // Add your custom logic for when the switch is OFF
+        }
+        let _url = 'market-status/' + status;
+
+        $.ajax({
+            url: _url,
+            type: "GET",
+            success: function (response) {
+                console.log(response)
             }
-            let _url = 'market-status/' + status;
+        });
+    }
 
-            $.ajax({
-                url: _url,
-                type: "GET",
-                success: function (response) {
-                    console.log(response)
+    function open_edit_modal(product_id){
+        let _url            = 'find-product/' + product_id;
+        $.ajax({
+            url: _url,
+            type: "GET",
+            success: function(response) {
+                console.log(response)
+                if(response) {
+                    if(Object.keys(response).length > 0)
+                    {
+                        $('#title_modal').val(response.title);
+                        $('#buy_price_modal').val(response.buy_price);
+                        $('#sell_price_modal').val(response.sell_price);
+                        $('#modal_product_id').val(product_id);
+                        document.getElementById("title_modal").innerText = response.title
+
+                        buy_status = response.buy_status;
+                        sell_status = response.sell_status;
+
+
+                        buy_status_checkbox = document.getElementById('buy_status_modal');
+                        sel_status_checkbox = document.getElementById('sell_status_modal');
+
+                        buy_status_checkbox.checked = buy_status === 1 ? true: false;
+                        sel_status_checkbox.checked = sell_status === 1 ? true: false;
+
+
+                        $('#edit_product_modal').removeClass('hidden');
+                    }else alert('محصول یافت نشد!')
                 }
-            });
-        }
+            }
+        });
+    }
 
-        function open_edit_modal(product_id){
-            let _url            = 'find-product/' + product_id;
-            $.ajax({
-                url: _url,
-                type: "GET",
-                success: function(response) {
-                    console.log(response)
-                    if(response) {
-                        if(Object.keys(response).length > 0)
-                        {
-                            $('#title_modal').val(response.title);
-                            $('#buy_price_modal').val(response.buy_price);
-                            $('#sell_price_modal').val(response.sell_price);
-                            $('#modal_product_id').val(product_id);
-                            document.getElementById("title_modal").innerText = response.title
+    function closeModal() {
 
-                            buy_status = response.buy_status;
-                            sell_status = response.sell_status;
+        $("#edit_product_modal").addClass("hidden");
+    }
 
 
-                            buy_status_checkbox = document.getElementById('buy_status_modal');
-                            sel_status_checkbox = document.getElementById('sell_status_modal');
-
-                            buy_status_checkbox.checked = buy_status === 1 ? true: false;
-                            sel_status_checkbox.checked = sell_status === 1 ? true: false;
-
-
-                            $('#edit_product_modal').removeClass('hidden');
-                        }else alert('محصول یافت نشد!')
-                    }
-                }
-            });
-        }
-
-        function closeModal() {
-
-            $("#edit_product_modal").addClass("hidden");
-        }
-
-
-    </script>
-
-    <script src="{{ url("/js/menutoggle.js")}}"></script>
-    <script src="{{ url("/js/menu-toggle.js")}}"></script>
+</script>
 @endsection
+</body>
+</html>

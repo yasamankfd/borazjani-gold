@@ -39,7 +39,8 @@ Route::get('/admin-liveorders',[AdminLiveOrdersController::class,'index'])->name
 Route::post('/admin-save-order',[AdminLiveOrdersController::class,'orderSave'])->name("admin-save-order");
 Route::get('/admin-transactions',[AdminTransactionsController::class,'index'])->name("admin-transactions");
 Route::get('/admin-manage-users',[AdminManageUsersController::class,'index'])->name("admin-manage-users");
-
+Route::get("/market-change",[AdminController::class,"showMarketChange"])->name("market-change");
+Route::get("/list-products" ,[AdminLiveOrdersController::class,"list_products"]);
 
 Route::post('/product-create',[AdminController::class,'create'])->name("product-create");
 Route::get("base_information_admin" , [AdminController::class,"baseInformation"])->name("base-information");
@@ -52,8 +53,6 @@ Route::get('/user-profile/{user_id}', [\App\Http\Controllers\UserProfileControll
 //refresh data after
 Route::get('/update', [RefreshData::class,'getUpdatedData']);
 Route::get('/user-transactions/{user_id}', [UserTransactionController::class,'index'])->name("user-transactions");
-
-
 
 
 

@@ -86,7 +86,7 @@
                                           <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->created_at->format('H:i:s') }}</td>
                                           <td class="oneLine w-36 md:w-[10%] flex gap-1 justify-center">
                                               <label class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base hidden " >{{ $item->status }}</label>
-                                              <p id="countdown_{{$item->id}}"> <span id="countdownValue_{{$item->id}}"></span> ثانیه </p>
+                                              <p id="countdown_{{$item->id}}"> <span id="countdownValue_{{$item->id}}" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base"></span>  </p>
 
                                           </td>
                                       </tr>

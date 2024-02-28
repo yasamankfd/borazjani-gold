@@ -236,6 +236,8 @@
       <path value="$PROJECT_DIR$/main/vendor/symfony/console" />
       <path value="$PROJECT_DIR$/main/vendor/symfony/event-dispatcher-contracts" />
       <path value="$PROJECT_DIR$/main/vendor/symfony/polyfill-php73" />
+      <path value="$PROJECT_DIR$/main/vendor/yajra/laravel-datatables-oracle" />
+      <path value="$PROJECT_DIR$/main/vendor/carbondate/carbon" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.0">
