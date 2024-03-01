@@ -137,7 +137,7 @@
                 autoWidth: false,
                 "order": [[1, "desc"]],
                 ajax:({
-                    url : 'list-products',
+                    url : 'admin-list-orders',
                     type : 'GET',
                 }),
                 columns: [

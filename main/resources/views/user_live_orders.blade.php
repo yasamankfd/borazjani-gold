@@ -39,7 +39,8 @@
                         </span>
                         <div class="gap-2 rounded-xl mt-5 pb-10">
                             <!-- ---------------------- جدول سفارشات جاری  ---------------------  -->
-                              <table x-data="{ detailrow:false }" class="space-y-3 block overflow-x-auto pb-5">
+                            <input class="hidden" id="user_id" value="{{$user_id}}">
+                              <table id="products_datatable" x-data="{ detailrow:false }" class="space-y-3 block overflow-x-auto pb-5">
                                   <thead class="w-full flex">
                                       <tr class="flex justify-between items-center w-fit md:w-full bg-slate-100 font-normal px-1 md:px-5 py-3 rounded-lg hover:shadow-gray-200/50 hover:shadow-lg text-xs lg:text-sm">
                                           <td class="border-l pl-5  md:w-[20%] text-center w-36 min-w-fit">نام محصول</td>
@@ -65,32 +66,32 @@
                                       </tr>
                                   </thead>
                                   <tbody x-data="{ detailrow:false }" class="space-y-1 w-full flex flex-col ">
-                                  @foreach($orders  as $item)
-                                      <tr class="flex flex-row justify-between items-center bg-slate-100 w-fit md:w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative text-colorprimary/70">
-                                          <td class="border-l pl-5  md:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm">طلا آبشده</td>
-                                          <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal tracking-tight text-base">
-                                            <span>{{ $item->value }}</span>
-                                            <span class="text-gray-400 font-extralight">گرم</span>
-                                          </td>
-                                          <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->fee }}</td>
-                                          <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->total_price }}</td>
-                                          <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-light tracking-tight text-sm flex gap-1 justify-center">
-                                            <span class=" @if($item->type == "sell") bg-colorthird1 @else bg-colorfourth1 @endif  px-4 py-2 w-full text-white rounded-full flex max-w-fit">
-                                                @if($item->type == "sell")
-                                                    فروش
-                                                @else
-                                                    خرید
-                                                @endif
-                                              </span>
-                                          </td>
-                                          <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->created_at->format('H:i:s') }}</td>
-                                          <td class="oneLine w-36 md:w-[10%] flex gap-1 justify-center">
-                                              <label class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base hidden " >{{ $item->status }}</label>
-                                              <p id="countdown_{{$item->id}}"> <span id="countdownValue_{{$item->id}}" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base"></span>  </p>
+{{--                                  @foreach($orders  as $item)--}}
+{{--                                      <tr class="flex flex-row justify-between items-center bg-slate-100 w-fit md:w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative text-colorprimary/70">--}}
+{{--                                          <td class="border-l pl-5  md:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm">طلا آبشده</td>--}}
+{{--                                          <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal tracking-tight text-base">--}}
+{{--                                            <span>{{ $item->value }}</span>--}}
+{{--                                            <span class="text-gray-400 font-extralight">گرم</span>--}}
+{{--                                          </td>--}}
+{{--                                          <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->fee }}</td>--}}
+{{--                                          <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->total_price }}</td>--}}
+{{--                                          <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-light tracking-tight text-sm flex gap-1 justify-center">--}}
+{{--                                            <span class=" @if($item->type == "sell") bg-colorthird1 @else bg-colorfourth1 @endif  px-4 py-2 w-full text-white rounded-full flex max-w-fit">--}}
+{{--                                                @if($item->type == "sell")--}}
+{{--                                                    فروش--}}
+{{--                                                @else--}}
+{{--                                                    خرید--}}
+{{--                                                @endif--}}
+{{--                                              </span>--}}
+{{--                                          </td>--}}
+{{--                                          <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->created_at->format('H:i:s') }}</td>--}}
+{{--                                          <td class="oneLine w-36 md:w-[10%] flex gap-1 justify-center">--}}
+{{--                                              <label class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base hidden " >{{ $item->status }}</label>--}}
+{{--                                              <p id="countdown_{{$item->id}}"> <span id="countdownValue_{{$item->id}}" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base"></span>  </p>--}}
 
-                                          </td>
-                                      </tr>
-                                  @endforeach
+{{--                                          </td>--}}
+{{--                                      </tr>--}}
+{{--                                  @endforeach--}}
                                   </tbody>
                               </table>
                         </div>
@@ -104,35 +105,144 @@
 <script src="{{ url("/js/menu-toggle.js")}}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{{url('/js/jquery.dataTables.min.js')}}"></script>
+
 <script>
-    function startCountdown(time , id) {
+    function startCountdown(time , id ) {
         now = new Date().getTime();
         created = new Date(time).getTime();
         let seconds = Number(((created + 120000) - now)/1000).toFixed(0) ;
-        // console.log(seconds)
-        // console.log(id)
-        var countdownValue = document.getElementById('countdownValue_'+id);
-        var countdown = document.getElementById('countdown_'+id);
+
+        var countdownValue = $('#countdownValue_' + id);
+        var countdown = $('#countdown_' + id);
         if(seconds < 0)
         {
-            countdownValue.innerText = '';
-            countdown.innerText = 'درخواست مجدد';
+
+            countdownValue.text('');
+            countdown.text('درخواست مجدد');
         }
         if(seconds >= 0 ){
+            console.log(seconds)
+
             var interval = setInterval(function () {
-                countdownValue.innerText = seconds;
+                countdownValue.text(seconds);
                 seconds--;
 
                 if (seconds < 0) {
                     clearInterval(interval);
-                    countdownValue.innerText = '0';
+                    countdownValue.text('0');
                 }
             }, 1000);
         }
     }
-    @foreach($orders as $item)
-    startCountdown("{{ $item->created_at }}", "{{ $item->id }}");
-    @endforeach
+    function yourJavaScriptFunction(row, data, dataIndex) {
+        startCountdown(data.created_at, data.id);
+    }
+    $(document).ready(function() {
+        // $('.select2').select2();
+        let laravel_datatable;
+        id = document.getElementById("user_id").value;
+
+        filterList(id);
+    });
+
+    function filterList(id) {
+        console.log("filter list")
+        console.log($id)
+        laravel_datatable = $('#products_datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            responsive: true,
+            paging: true,
+            autoWidth: false,
+            "order": [[1, "desc"]],
+            ajax:({
+                url : 'user-list-orders/'+$id,
+                type : 'GET',
+            }),
+            columns: [
+                {
+                    "data": null, "sortable": false, searchable: false, orderable: false,
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {data: 'title', name: 'title', orderable: true, searchable: false},
+                {data: 'value', name: 'value', orderable: true, searchable: false},
+                {data: 'fee', name: 'fee', orderable: true, searchable: false},
+                {data: 'totalPrice', name: 'totalPrice', orderable: false, searchable: false},
+                {data: 'type', name: 'type', orderable: true, searchable: false},
+                {data: 'status', name: 'status', orderable: true, searchable: false},
+            ],
+            "createdRow": function (row, data, dataIndex) {
+                // Call your JavaScript function with arguments here
+                yourJavaScriptFunction(row, data, dataIndex);
+            },
+            "columnDefs": [
+                { className: "border-l pl-5  md:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm", "targets": [ 0 ] },
+                { className: "oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal tracking-tight text-base", "targets": [ 1 ] },
+                { className: "oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm", "targets": [ 2 ] },
+                { className: "oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm", "targets": [ 3 ] },
+                { className: "oneLine text-lengh w-36 md:w-[15%] text-center border-l font-light tracking-tight text-sm flex gap-1 justify-center", "targets": [ 4 ] },
+                { className: "oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm", "targets": [ 5 ] },
+                { className: "oneLine w-36 xl:w-[10%] flex gap-1 justify-center", "targets": [ 6 ] },
+
+            ],
+            language: {
+                "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
+                "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+                "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ",",
+                "sLengthMenu": "نمایش _MENU_ رکورد",
+                "sLoadingRecords": "در حال بارگزاری...",
+                "sProcessing": "در حال پردازش...",
+                "sSearch": "جستجو:",
+                "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
+                "oPaginate": {
+                    "sFirst": "ابتدا",
+                    "sLast": "انتها",
+                    "sNext": "بعدی",
+                    "sPrevious": "قبلی"
+                },
+                "oAria": {
+                    "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
+                    "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+                }
+            }
+        });
+
+    }
+    // function startCountdown2(time , id) {
+    //     now = new Date().getTime();
+    //     created = new Date(time).getTime();
+    //     let seconds = Number(((created + 120000) - now)/1000).toFixed(0) ;
+    //     // console.log(seconds)
+    //     // console.log(id)
+    //     var countdownValue = document.getElementById('countdownValue_'+id);
+    //     var countdown = document.getElementById('countdown_'+id);
+    //     if(seconds < 0)
+    //     {
+    //         countdownValue.innerText = '';
+    //         countdown.innerText = 'درخواست مجدد';
+    //     }
+    //     if(seconds >= 0 ){
+    //         var interval = setInterval(function () {
+    //             countdownValue.innerText = seconds;
+    //             seconds--;
+    //
+    //             if (seconds < 0) {
+    //                 clearInterval(interval);
+    //                 countdownValue.innerText = '0';
+    //             }
+    //         }, 1000);
+    //     }
+    // }
+{{--    @foreach($orders as $item)--}}
+{{--    startCountdown("{{ $item->created_at }}", "{{ $item->id }}");--}}
+{{--    @endforeach--}}
 </script>
 @endsection
 

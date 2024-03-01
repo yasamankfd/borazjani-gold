@@ -3,12 +3,13 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminLiveOrdersController;
+use App\Http\Controllers\AdminManageCustomersController;
 use App\Http\Controllers\AdminManageUsersController;
 use App\Http\Controllers\AdminOrdersController;
 use App\Http\Controllers\AdminTransactionsController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerOrdersController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CustomerDashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RefreshData;
 use App\Http\Controllers\UserLiveOrdersController;
@@ -38,14 +39,35 @@ Route::post('/product-edit',[AdminController::class,'singleProductChange'])->nam
 Route::get('/admin-liveorders',[AdminLiveOrdersController::class,'index'])->name("admin-liveorders");
 Route::post('/admin-save-order',[AdminLiveOrdersController::class,'orderSave'])->name("admin-save-order");
 Route::get('/admin-transactions',[AdminTransactionsController::class,'index'])->name("admin-transactions");
-Route::get('/admin-manage-users',[AdminManageUsersController::class,'index'])->name("admin-manage-users");
+Route::get('/admin-manage-customers',[AdminManageCustomersController::class,'index'])->name("admin-manage-customers");
 Route::get("/market-change",[AdminController::class,"showMarketChange"])->name("market-change");
-Route::get("/list-products" ,[AdminLiveOrdersController::class,"list_products"]);
+Route::get("/customer-list-products" ,[CustomerDashboardController::class,"list_products"]);
+
+
+Route::get('/find-customer/{customer_id}',[AdminManageCustomersController::class,'findCustomer']);
+Route::get("/admin-list-orders" ,[AdminLiveOrdersController::class,"list_orders"]);
+Route::get("/admin-dashboard-list-products" ,[AdminController::class,"list_dashboard_products"]);
+Route::get("/admin-base-info-list-products" ,[AdminController::class,"list_base_info_products"]);
+
+Route::get("/admin-list-transactions-buy" ,[AdminTransactionsController::class,"list_transactions_buy"]);
+Route::get("/admin-list-transactions-sell" ,[AdminTransactionsController::class,"list_transactions_sell"]);
+Route::get("/admin-list-customers" ,[AdminManageCustomersController::class,"list_customers"]);
+Route::post('/customer-create',[AdminManageCustomersController::class,'create'])->name("customer-create");
+Route::get('/find-user/{user_id}',[AdminManageUsersController::class,'findUser']);
+
 
 Route::post('/product-create',[AdminController::class,'create'])->name("product-create");
 Route::get("base_information_admin" , [AdminController::class,"baseInformation"])->name("base-information");
 
-Route::get("/dashboard",[DashboardController::class,"index"])->name("dashboard");
+Route::get("/admin-list-users" ,[AdminManageUsersController::class,"list_users"]);
+Route::post('/user-create',[AdminManageUsersController::class,'create'])->name("user-create");
+Route::get('/admin-manage-users',[AdminManageUsersController::class,'index'])->name("admin-manage-users");
+
+
+Route::get("/user-list-transactions-buy/{user_id}" ,[UserTransactionController::class,"list_transactions_buy"]);
+Route::get("/user-list-transactions-sell/{user_id}" ,[UserTransactionController::class,"list_transactions_sell"]);
+Route::get("/user-list-orders/{user_id}" ,[UserLiveOrdersController::class,"list_orders"]);
+Route::get("/dashboard",[CustomerDashboardController::class,"index"])->name("dashboard");
 Route::get("/user-order/{product}/{type}",[UserSubmitOrder::class,"index"]);
 Route::get('/user-liveorders/{user_id}', [UserLiveOrdersController::class , 'index'])->name('user-liveorders');
 Route::get('/user-profile/{user_id}', [\App\Http\Controllers\UserProfileController::class , 'index'])->name('user-profile');
@@ -58,12 +80,12 @@ Route::get('/user-transactions/{user_id}', [UserTransactionController::class,'in
 
 Route::get('/order/{product}/{type}',[OrderController::class,'index']);
 Route::post('/order',[UserSubmitOrder::class,'store'])->name('save-temp-order');
-Route::get('/admin-orders', [AdminOrdersController::class,'index'])->name('admin-orders');
+//Route::get('/admin-orders', [AdminOrdersController::class,'index'])->name('admin-orders');
 
 
-Route::get("/customer", [CustomerController::class,"index"])->name('customer');
-Route::get('/customer-orders/{user_id}', [CustomerOrdersController::class,'index'])->name('customer-orders');
-Route::post('/order',[OrderController::class,'store'])->name('save-temp-order');
+//Route::get("/customer", [CustomerController::class,"index"])->name('customer');
+//Route::get('/customer-orders/{user_id}', [CustomerOrdersController::class,'index'])->name('customer-orders');
+//Route::post('/order',[OrderController::class,'store'])->name('save-temp-order');
 
 //Route::get('/listen', function () {
 //    return view('listen');

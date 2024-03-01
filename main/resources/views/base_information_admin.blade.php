@@ -18,9 +18,10 @@
                         </span>
                         <div class="gap-2 rounded-xl mt-5 pb-10">
                                     <!-- ---------------------- جدول معاملات خرید  ---------------------  -->
-                                    <table x-data="{ detailrow:false }" class="space-y-3 block overflow-x-auto pb-5 mt-5">
+                                    <table id="products_datatable" x-data="{ detailrow:false }" class="space-y-3 block overflow-x-auto pb-5 mt-5">
                                         <thead class="w-full flex">
                                             <tr class="flex justify-between items-center w-fit md:w-full bg-colorprimary text-white font-normal px-1 md:px-5 py-3 rounded-lg hover:shadow-gray-200/50 hover:shadow-lg text-xs lg:text-sm">
+                                                <td class="border-l pl-5  md:w-[20%] text-center w-36 min-w-fit">ردیف</td>
                                                 <td class="border-l pl-5  md:w-[20%] text-center w-36 min-w-fit">نام محصول</td>
                                                 <td class="w-36 md:w-[15%] text-center border-l min-w-fit">
                                                   <span>واحد</span>
@@ -40,26 +41,8 @@
                                                 </td>
                                             </tr>
                                         </thead>
-
                                         <tbody x-data="{ detailrow:false }" class="space-y-1 w-full flex flex-col ">
-                                            @foreach($products as $product)
-                                                <tr class="flex flex-row justify-between items-center bg-slate-100 w-fit md:w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative text-colorprimary/70">
-                                                <td class="border-l pl-5  md:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight">{{ $product->title }}</td>
-                                                <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal">
-                                                  <span class="font-normal tracking-tight">{{ $product->unit }}</span>
-                                                </td>
-                                                <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight">{{ $product->buy_price }}</td>
-                                                <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight">{{ $product->sell_price }}</td>
-                                                <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal tracking-tight flex gap-1 justify-center">
-                                                   <span class=" @if($product->status ==1) bg-colorfourth1 @else bg-colorthird1 @endif  text-white px-3 py-1 rounded-full font-light">@if($product->status ==1 ) فعال @else غیرفعال @endif</span>
-                                                </td>
-                                                <td class="oneLine w-36 md:w-[10%] flex gap-1 justify-center font-normal tracking-tight">
-                                                    <a onclick="open_edit_modal({{ $product->id }})"  class="bg-colorprimary p-2 rounded-xl">
-                                                        <img  src="{{ url("/img/edit-icon.svg")}}" alt="" class="w-4">
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            @endforeach
+
                                         </tbody>
                                     </table>
                         </div>
@@ -76,7 +59,6 @@
                       </svg>
                  </span>
             </span>
-
             <!-- ردیف اول  -->
             <form id="product_form" action="{{ route('product-create') }}" method="POST" id="create_product_form">
                 @csrf
@@ -150,7 +132,77 @@
 <script src="{{ url("/js/select-searchable.js")}}"></script>
 <script src="{{ url("/js/menutoggle.js")}}"></script>
 <script src="{{ url("/js/menu-toggle.js")}}"></script>
+<script src="{{url('/js/jquery.dataTables.min.js')}}"></script>
 <script>
+    $(document).ready(function() {
+        // $('.select2').select2();
+        let laravel_datatable;
+        filterList();
+    });
+
+    function filterList() {
+        console.log("filter list")
+        laravel_datatable = $('#products_datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            responsive: true,
+            paging: true,
+            autoWidth: false,
+            "order": [[1, "desc"]],
+            ajax:({
+                url : 'admin-base-info-list-products',
+                type : 'GET',
+            }),
+            columns: [
+                {
+                    "data": null, "sortable": false, searchable: false, orderable: false,
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {data: 'title', name: 'title', orderable: true, searchable: true},
+                {data: 'unit', name: 'unit', orderable: true, searchable: false},
+                {data: 'buy_price', name: 'buy_price', orderable: true, searchable: false},
+                {data: 'sell_price', name: 'sell_price', orderable: true, searchable: false},
+                {data: 'status', name: 'status', orderable: false, searchable: false},
+                {data: 'action', name: 'action', orderable: true, searchable: false},
+            ],
+            "columnDefs": [
+                { className: "border-l pl-5  md:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight", "targets": [ 0 ] },
+                { className: "oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal", "targets": [ 1 ] },
+                { className: "oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight", "targets": [ 2 ] },
+                { className: "oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight" , "targets": [ 3 ] },
+                { className: "oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal tracking-tight flex gap-1 justify-center" , "targets": [ 4 ] },
+                { className: "oneLine w-36 md:w-[10%] flex gap-1 justify-center font-normal tracking-tight", "targets": [ 5 ] },
+            ],
+            language: {
+                "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
+                "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+                "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ",",
+                "sLengthMenu": "نمایش _MENU_ رکورد",
+                "sLoadingRecords": "در حال بارگزاری...",
+                "sProcessing": "در حال پردازش...",
+                "sSearch": "جستجو:",
+                "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
+                "oPaginate": {
+                    "sFirst": "ابتدا",
+                    "sLast": "انتها",
+                    "sNext": "بعدی",
+                    "sPrevious": "قبلی"
+                },
+                "oAria": {
+                    "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
+                    "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+                }
+            }
+        });
+
+    }
+
     function change_modal_status_value(id)
     {
         console.log("here baby")
@@ -164,7 +216,7 @@
     function open_edit_modal(product_id)
     {
         console.log("editttttttt");
-        let _url = 'findProduct/' + product_id;
+        let _url = 'find-product/' + product_id;
         $.ajax({
             url: _url,
             type: "GET",

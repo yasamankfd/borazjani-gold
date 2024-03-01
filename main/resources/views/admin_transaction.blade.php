@@ -36,15 +36,16 @@
                                     <span class="bg-colorfourth1 w-10 h-[3px] absolute -bottom-2"></span>
                                 </span>
                                 <!-- ---------------------- جدول  معاملات خرید  ---------------------  -->
-                               <table x-data="{ detailrow:false }" class="space-y-3 block overflow-x-auto pb-5 mt-5">
+                               <table id="transaction_datatable_buy" x-data="{ detailrow:false }" class="space-y-3 block overflow-x-auto pb-5 mt-5">
                                 <thead class="w-full flex">
                                     <tr class="flex justify-between items-center w-fit xl:w-full bg-colorprimary text-white font-normal px-1 md:px-5 py-3 rounded-lg hover:shadow-gray-200/50 hover:shadow-lg text-xs lg:text-sm">
-                                      <td class="border-l xl:w-[20%] text-center w-36 min-w-fit">کاربر</td>
-
-                                      <td class="border-l xl:w-[20%] text-center w-36 min-w-fit">نام محصول</td>
+                                        <td class="border-l xl:w-[5%] text-center w-36 min-w-fit">ردیف</td>
+                                        <td class="border-l xl:w-[15%] text-center w-36 min-w-fit">کاربر</td>
+                                        <td class="border-l xl:w-[15%] text-center w-36 min-w-fit">نام محصول</td>
                                         <td class="w-36 xl:w-[10%] text-center border-l min-w-fit">
-                                          <span>مقدار</span>
-                                        <td class="w-36 xl:w-[15%] text-center border-l min-w-fit">
+                                            <span>مقدار</span>
+                                        </td>
+                                        <td class="w-36 xl:w-[10%] text-center border-l min-w-fit">
                                           <span>فی</span>
                                           <span class="text-gray-400 font-extralight">(ریال)</span>
                                         </td>
@@ -55,34 +56,12 @@
                                         <td class="w-36 xl:w-[20%] text-center border-r">
                                           <span>زمان</span>
                                         </td>
+                                        <td class="w-36 xl:w-[10%] text-center border-r">
+                                            <span>کد</span>
+                                        </td>
                                     </tr>
                                 </thead>
                                 <tbody x-data="{ detailrow:false }" class="space-y-1 w-full flex flex-col ">
-                                @foreach($transactions as $transaction)
-                                    @if($transaction->type == "buy")
-                                        <tr class="flex flex-row justify-between items-center bg-slate-100 w-fit xl:w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative text-colorprimary/70">
-                                      <td class="border-l xl:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm">{{ $transaction->user->name }} {{ $transaction->user->lastname }}</td>
-                                      <td class="border-l xl:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm flex flex-col">
-                                          <span>{{ $transaction->product->title }}</span>
-                                          <span class="font-light">2321</span>
-                                      </td>
-                                        <td class="oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-normal tracking-tight text-base">
-                                          <span>{{ $transaction->value }}</span>
-                                          <span class="text-gray-400 font-extralight">@if($transaction->unit == "gram") گرم @else تعداد @endif</span>
-                                        </td>
-                                        <td class="oneLine text-lengh w-36 xl:w-[15%] text-center border-l font-normal tracking-tight text-sm">{{ $transaction->fee }}</td>
-                                        <td class="oneLine text-lengh w-36 xl:w-[15%] text-center border-l font-normal tracking-tight text-sm">{{ $transaction->total_price }}</td>
-                                        <td class="oneLine text-lengh w-36 xl:w-[20%] text-center font-normal tracking-tight text-sm flex gap-2 justify-center">
-                                          <span class="w-full flex max-w-fit">
-                                             1402/03/12
-                                          </span>
-                                          <span class="w-full flex max-w-fit">
-                                            22:30
-                                         </span>
-                                        </td>
-                                    </tr>
-                                    @endif
-                                @endforeach
                                 </tbody>
                                 </table>
                             </div>
@@ -91,21 +70,21 @@
                                 <span class="relative flex gap-2">
                                     <img src="{{ url("/img/product-icon.svg")}}" alt="">
                                     <span class="text-sm md:text-base">لیست معاملات فروش</span>
-
                                     <span class="bg-colorprimary w-40 md:w-48 h-[1px] absolute -bottom-2"></span>
                                     <span class="bg-colorthird1 w-10 h-[3px] absolute -bottom-2"></span>
                                 </span>
                                 <!-- ---------------------- جدول معاملات فروش  ---------------------  -->
                                 <!-- ---------------------- جدول  معاملات خرید  ---------------------  -->
-                           <table x-data="{ detailrow:false }" class="space-y-3 block overflow-x-auto pb-5 mt-5">
+                           <table id="transaction_datatable_sell" x-data="{ detailrow:false }" class="space-y-3 block overflow-x-auto pb-5 mt-5">
                             <thead class="w-full flex">
                                 <tr class="flex justify-between items-center w-fit xl:w-full bg-colorprimary text-white font-normal px-1 md:px-5 py-3 rounded-lg hover:shadow-gray-200/50 hover:shadow-lg text-xs lg:text-sm">
-                                  <td class="border-l xl:w-[20%] text-center w-36 min-w-fit">کاربر</td>
-
-                                  <td class="border-l xl:w-[20%] text-center w-36 min-w-fit">نام محصول</td>
+                                    <td class="border-l xl:w-[5%] text-center w-36 min-w-fit">ردیف</td>
+                                    <td class="border-l xl:w-[15%] text-center w-36 min-w-fit">کاربر</td>
+                                    <td class="border-l xl:w-[15%] text-center w-36 min-w-fit">نام محصول</td>
                                     <td class="w-36 xl:w-[10%] text-center border-l min-w-fit">
                                       <span>مقدار</span>
-                                    <td class="w-36 xl:w-[15%] text-center border-l min-w-fit">
+                                    </td>
+                                    <td class="w-36 xl:w-[10%] text-center border-l min-w-fit">
                                       <span>فی</span>
                                       <span class="text-gray-400 font-extralight">(ریال)</span>
                                     </td>
@@ -116,34 +95,12 @@
                                     <td class="w-36 xl:w-[20%] text-center border-r">
                                       <span>زمان</span>
                                     </td>
+                                    <td class="w-36 xl:w-[10%] text-center border-r">
+                                      <span>کد</span>
+                                    </td>
                                 </tr>
                             </thead>
                             <tbody x-data="{ detailrow:false }" class="space-y-1 w-full flex flex-col ">
-                            @foreach($transactions as $transaction)
-                                @if($transaction->type == "sell")
-                                    <tr class="flex flex-row justify-between items-center bg-slate-100 w-fit xl:w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative text-colorprimary/70">
-                                      <td class="border-l xl:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm">{{ $transaction->user->name }} {{ $transaction->user->lastname }}</td>
-                                      <td class="border-l xl:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm flex flex-col">
-                                          <span>{{ $transaction->product->title }}</span>
-                                          <span class="font-light">2321</span>
-                                      </td>
-                                        <td class="oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-normal tracking-tight text-base">
-                                          <span>{{ $transaction->value }}</span>
-                                          <span class="text-gray-400 font-extralight">@if($transaction->unit == "gram") گرم @else تعداد @endif</span>
-                                        </td>
-                                        <td class="oneLine text-lengh w-36 xl:w-[15%] text-center border-l font-normal tracking-tight text-sm">{{ $transaction->fee }}</td>
-                                        <td class="oneLine text-lengh w-36 xl:w-[15%] text-center border-l font-normal tracking-tight text-sm">{{ $transaction->total_price }}</td>
-                                        <td class="oneLine text-lengh w-36 xl:w-[20%] text-center font-normal tracking-tight text-sm flex gap-2 justify-center">
-                                          <span class="w-full flex max-w-fit">
-                                             1402/03/12
-                                          </span>
-                                          <span class="w-full flex max-w-fit">
-                                            22:30
-                                         </span>
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
 
                             </tbody>
                             </table>
@@ -155,6 +112,11 @@
 
 @endsection
 @section("scripts")
+
+    <script src="{{ url("/js/select-searchable.js")}}"></script>
+    <script src="{{ url("/js/menutoggle.js")}}"></script>
+    <script src="{{ url("/js/menu-toggle.js")}}"></script>
+    <script src="{{url('/js/jquery.dataTables.min.js')}}"></script>
     <script>
         function change_list(type)
         {
@@ -172,10 +134,147 @@
             }
 
         }
+        $(document).ready(function() {
+            // $('.select2').select2();
+            let laravel_datatable;
+            filterListBuy();
+            filterListSell()
+        });
+
+        function filterListBuy() {
+            console.log("filter list")
+            laravel_datatable = $('#transaction_datatable_buy').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                responsive: true,
+                paging: true,
+                autoWidth: false,
+                "order": [[1, "desc"]],
+                ajax:({
+                    url : 'admin-list-transactions-buy',
+                    type : 'GET',
+                }),
+                columns: [
+                    {
+                        "data": null, "sortable": false, searchable: false, orderable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {data: 'user', name: 'user', orderable: true, searchable: true},
+                    {data: 'title', name: 'title', orderable: true, searchable: false},
+                    {data: 'value', name: 'value', orderable: true, searchable: false},
+                    {data: 'fee', name: 'fee', orderable: true, searchable: false},
+                    {data: 'totalPrice', name: 'totalPrice', orderable: false, searchable: false},
+                    {data: 'time', name: 'time', orderable: true, searchable: false},
+                    {data: 'number', name: 'number', orderable: true, searchable: false},
+                ],
+
+                "columnDefs": [
+                    { className: "border-l xl:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm", "targets": [ 0 ] },
+                    { className: "border-l xl:w-[15%] text-center w-36 min-w-fit font-normal tracking-tight text-sm flex flex-col", "targets": [ 1 ] },
+                    { className: "oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-normal tracking-tight text-base", "targets": [ 2 ] },
+                    { className: "oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-normal tracking-tight text-base", "targets": [ 3 ] },
+                    { className: "oneLine text-lengh w-36 xl:w-[15%] text-center border-l font-normal tracking-tight text-sm", "targets": [ 4 ] },
+                    { className: "oneLine text-lengh w-36 xl:w-[20%] text-center font-normal tracking-tight text-sm flex gap-2 justify-center", "targets": [ 5 ] },
+                    { className: "oneLine text-lengh w-36 xl:w-[10%] text-center font-normal tracking-tight text-sm flex gap-2 justify-center", "targets": [ 6 ] },
+
+                ],
+                language: {
+                    "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
+                    "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                    "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+                    "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "نمایش _MENU_ رکورد",
+                    "sLoadingRecords": "در حال بارگزاری...",
+                    "sProcessing": "در حال پردازش...",
+                    "sSearch": "جستجو:",
+                    "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
+                    "oPaginate": {
+                        "sFirst": "ابتدا",
+                        "sLast": "انتها",
+                        "sNext": "بعدی",
+                        "sPrevious": "قبلی"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
+                        "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+                    }
+                }
+            });
+
+        }
+
+        function filterListSell() {
+            console.log("filter list")
+            laravel_datatable = $('#transaction_datatable_sell').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                responsive: true,
+                paging: true,
+                autoWidth: false,
+                "order": [[1, "desc"]],
+                ajax:({
+                    url : 'admin-list-transactions-sell',
+                    type : 'GET',
+                }),
+                columns: [
+                    {
+                        "data": null, "sortable": false, searchable: false, orderable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {data: 'user', name: 'user', orderable: true, searchable: true},
+                    {data: 'title', name: 'title', orderable: true, searchable: false},
+                    {data: 'value', name: 'value', orderable: true, searchable: false},
+                    {data: 'fee', name: 'fee', orderable: true, searchable: false},
+                    {data: 'totalPrice', name: 'totalPrice', orderable: false, searchable: false},
+                    {data: 'time', name: 'time', orderable: true, searchable: false},
+                    {data: 'number', name: 'number', orderable: true, searchable: false},
+                ],
+
+                "columnDefs": [
+                    { className: "border-l xl:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm flex flex-col", "targets": [ 0 ] },
+                    { className: "oneLine text-lengh w-36 xl:w-[15%] text-center border-l font-normal tracking-tight text-base", "targets": [ 1 ] },
+                    { className: "oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-normal tracking-tight text-base", "targets": [ 2 ] },
+                    { className: "oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-normal tracking-tight text-base", "targets": [ 3 ] },
+                    { className: "oneLine text-lengh w-36 xl:w-[15%] text-center border-l font-normal tracking-tight text-sm", "targets": [ 4 ] },
+                    { className: "oneLine text-lengh w-36 xl:w-[20%] text-center font-normal tracking-tight text-sm flex gap-2 justify-center", "targets": [ 5 ] },
+                    { className: "oneLine text-lengh w-36 xl:w-[10%] text-center font-normal tracking-tight text-sm flex gap-2 justify-center", "targets": [ 6 ] },
+
+                ],
+                language: {
+                    "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
+                    "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                    "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+                    "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "نمایش _MENU_ رکورد",
+                    "sLoadingRecords": "در حال بارگزاری...",
+                    "sProcessing": "در حال پردازش...",
+                    "sSearch": "جستجو:",
+                    "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
+                    "oPaginate": {
+                        "sFirst": "ابتدا",
+                        "sLast": "انتها",
+                        "sNext": "بعدی",
+                        "sPrevious": "قبلی"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
+                        "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+                    }
+                }
+            });
+
+        }
     </script>
 
-    <script src="{{ url("/js/select-searchable.js")}}"></script>
-    <script src="{{ url("/js/menutoggle.js")}}"></script>
-    <script src="{{ url("/js/menu-toggle.js")}}"></script>
 @endsection
 

@@ -31,7 +31,7 @@
                         </span>
                         <div class="gap-2 rounded-xl mt-5 pb-10">
                                <!-- ---------------------- جدول سفارشات جاری  ---------------------  -->
-                               <table class="space-y-3 block overflow-x-auto pb-5">
+                               <table id="products_datatable" class="space-y-3 block overflow-x-auto pb-5">
                                 <thead class="w-full flex">
                                     <tr class="flex justify-between items-center w-full bg-colorprimary text-white font-normal px-1 md:px-5 py-3 rounded-lg hover:shadow-gray-200/50 hover:shadow-lg text-xs lg:text-sm">
                                         <td class="border-l pl-5 md:w-[30%]  lg:w-[20%] text-center w-36 min-w-fit">نام محصول</td>
@@ -55,45 +55,6 @@
                                     </tr>
                                 </thead>
                                 <tbody x-data="{ detailrow:false }" class="space-y-1 w-full flex flex-col ">
-                                @foreach($products as $product)
-                                    <form action="{{ route("product-edit")}}" id="edit_product" method="POST">
-                                        @csrf
-                                    </form>
-                                    <tr class="flex flex-row justify-between items-center bg-slate-100 w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative text-colorprimary/70">
-                                        <td class="border-l pl-5 md:w-[30%] lg:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm">{{ $product->title }}</td>
-                                        <td class="oneLine text-lengh w-36 md:w-[25%] lg:md:w-[15%] text-center border-l font-normal tracking-tight text-sm text-colorfourth1 hidden md:block px-2">
-                                            <input name="buy_price_{{ $product->id }}" id="buy_price_{{ $product->id }}" value="{{ $product->buy_price }}" type="text" class="bg-transparent w-full rounded-full text-center border-colorfourth1 focus:outline-colorsecondry1 focus:ring-0 focus:border-0 text-sm">
-                                        </td>
-                                        <td class="oneLine text-lengh w-36 md:w-[25%] lg:md:w-[15%] text-center border-l font-normal tracking-tight text-sm text-colorthird1 hidden md:block px-2">
-                                            <input name="sell_price_{{ $product->id }}" id="sell_price_{{ $product->id }}" value="{{ $product->sell_price }}" type="text" class="bg-transparent w-full rounded-full text-center border-colorthird1 focus:outline-colorsecondry1 focus:ring-0 focus:border-0 text-sm">
-                                        </td>
-                                        <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-light tracking-tight text-sm gap-1 justify-center hidden lg:flex">
-                                            <label class="flex gap-2 items-center cursor-pointer">
-                                                <span class="text-sm font-medium text-gray-900 dark:text-gray-300">بسته</span>
-                                                <input name="product_buy_status_{{ $product->id }}" id="product_buy_status_{{ $product->id }}" type="checkbox" @if($product->buy_status=='1') checked @endif class="sr-only peer">
-                                                <div class="relative w-11 h-6 bg-colorthird1 peer-focus:outline-none peer-focus:ring-4 dark:peer-focus:ring-colorthird1 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-colorfourth1"></div>
-                                                <span class="text-sm font-medium text-gray-900 dark:text-gray-300">باز</span>
-                                            </label>
-                                        </td>
-                                        <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-light tracking-tight text-sm gap-1 justify-center hidden lg:flex">
-                                            <label class="flex gap-2 items-center cursor-pointer">
-                                                <span class="text-sm font-medium text-gray-900 dark:text-gray-300">بسته</span>
-                                                <input name="product_sell_status_{{ $product->id }}" id="product_sell_status_{{ $product->id }}" type="checkbox" @if($product->sell_status=='1') checked @endif class="sr-only peer">
-                                                <div class="relative w-11 h-6 bg-colorthird1 peer-focus:outline-none peer-focus:ring-4 dark:peer-focus:ring-colorthird1 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-colorfourth1"></div>
-                                                <span class="text-sm font-medium text-gray-900 dark:text-gray-300">باز</span>
-                                            </label>
-                                        </td>
-                                        <td class="oneLine w-36 md:w-[20%] lg:w-[10%] flex gap-1 justify-center">
-                                            <button onclick="open_edit_modal({{ $product->id }})"  class="bg-colorprimary p-3 py-2 text-white rounded-full flex cursor-pointer hover:scale-105  transition-transform font-light text-xs">
-                                                ویرایش
-                                            </button>
-                                            <button onclick="submit_form({{ $product->id }} , 1 )"  class="bg-colorprimary p-3 py-2 text-white rounded-full flex cursor-pointer hover:scale-105  transition-transform font-light text-xs">
-                                                ثبت
-                                            </button>
-                                        </td>
-
-                                    </tr>
-                                @endforeach
 
                                 </tbody>
                             </table>
@@ -169,7 +130,79 @@
 @endsection
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{{url('/js/jquery.dataTables.min.js')}}"></script>
+
     <script>
+        $(document).ready(function() {
+            // $('.select2').select2();
+            let laravel_datatable;
+            filterList();
+        });
+
+        function filterList() {
+            console.log("filter list")
+            laravel_datatable = $('#products_datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                responsive: true,
+                paging: true,
+                autoWidth: false,
+                "order": [[1, "desc"]],
+                ajax:({
+                    url : 'admin-dashboard-list-products',
+                    type : 'GET',
+                }),
+                columns: [
+                    {
+                        "data": null, "sortable": false, searchable: false, orderable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {data: 'title', name: 'title', orderable: true, searchable: true},
+                    {data: 'buy_price', name: 'buy_price', orderable: true, searchable: false},
+                    {data: 'sell_price', name: 'sell_price', orderable: true, searchable: false},
+                    {data: 'buy_status', name: 'buy_status', orderable: true, searchable: false},
+                    {data: 'sell_status', name: 'sell_status', orderable: false, searchable: false},
+                    {data: 'action', name: 'action', orderable: true, searchable: false},
+
+                ],
+                "columnDefs": [
+                    { className: "border-l pl-5 md:w-[30%] lg:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm", "targets": [ 0 ] },
+                    { className: "oneLine text-lengh w-36 md:w-[25%] lg:md:w-[15%] text-center border-l font-normal tracking-tight text-sm text-colorfourth1 hidden md:block px-2", "targets": [ 1 ] },
+                    { className: "oneLine text-lengh w-36 md:w-[25%] lg:md:w-[15%] text-center border-l font-normal tracking-tight text-sm text-colorthird1 hidden md:block px-2", "targets": [ 2 ] },
+                    { className: "oneLine text-lengh w-36 md:w-[20%] text-center border-l font-light tracking-tight text-sm gap-1 justify-center hidden lg:flex", "targets": [ 3 ] },
+                    { className: "oneLine text-lengh w-36 md:w-[20%] text-center border-l font-light tracking-tight text-sm gap-1 justify-center hidden lg:flex", "targets": [ 4 ] },
+                    { className: "oneLine w-36 md:w-[20%] lg:w-[10%] flex gap-1 justify-center", "targets": [ 5 ] },
+
+                ],
+                language: {
+                    "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
+                    "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                    "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+                    "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "نمایش _MENU_ رکورد",
+                    "sLoadingRecords": "در حال بارگزاری...",
+                    "sProcessing": "در حال پردازش...",
+                    "sSearch": "جستجو:",
+                    "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
+                    "oPaginate": {
+                        "sFirst": "ابتدا",
+                        "sLast": "انتها",
+                        "sNext": "بعدی",
+                        "sPrevious": "قبلی"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
+                        "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+                    }
+                }
+            });
+
+        }
         function submit_form(product_id , type) {
             // Get form data
             let formData = new FormData(document.getElementById('edit_product'));

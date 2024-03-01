@@ -18,7 +18,7 @@ class AdminLiveOrdersController extends Controller
         return view('admin_live_orders' , compact('orders','market'));
     }
 
-    public function list_products()
+    public function list_orders()
     {
         $orders = Orders::orderBy('created_at', 'desc')->get();
         return datatables()->of($orders)
@@ -63,7 +63,7 @@ class AdminLiveOrdersController extends Controller
 
                 if ($this->checkOrderTime($row->created_at)) {
                     return '<td>
-                                <form method="POST" action="'.route($route).'">
+                                <form method="POST" action="'.route('admin-save-order').'">
                                                    ' . csrf_field() . '
                                                   <input id="order_id" name="order_id" value="'.$row->id.'" class="hidden">
                                                   <button type="submit"  class="bg-colorprimary px-5 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base cursor-pointer">

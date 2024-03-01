@@ -39,9 +39,10 @@
                         </span>
                             <div class="gap-2 rounded-xl mt-5 pb-10">
                             <!-- ---------------------- جدول قیمت محصولات ---------------------  -->
-                              <table x-data="{ detailrow:false }" class="space-y-3 block pb-5">
+                              <table id="products_datatable" x-data="{ detailrow:false }" class="space-y-3 block pb-5">
                                   <thead class="w-full flex">
                                       <tr class="flex justify-between items-center w-full bg-slate-100 font-normal px-1 md:px-5 py-3 rounded-lg hover:shadow-gray-200/50 hover:shadow-lg text-xs lg:text-sm">
+                                          <td class="border-l sm:w-[30%] text-center w-24 break-words">ردیف</td>
                                           <td class="border-l sm:w-[30%] text-center w-24 break-words">نام محصول</td>
                                           <td class="w-24 sm:w-[25%] text-center  border-l min-w-fit flex justify-center">
                                             <span>قیمت خرید</span>
@@ -57,36 +58,32 @@
                                       </tr>
                                   </thead>
                                   <tbody x-data="{ detailrow:false }" class="space-y-1 w-full flex flex-col ">
-                                          @foreach($products as $product)
-                                              @if($product->status == 1)
-                                                  <tr class="flex flex-row justify-between items-center bg-slate-100 w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative">
 
-                                              <td class="border-l sm:w-[30%] text-center w-24 break-words">{{ $product->title }}</td>
-                                              <td class="oneLine text-lengh w-24 sm:w-[25%] text-center border-l font-bold text-xs xl:text-base text-colorfourth1 flex flex-col items-center">
-                                            <span id={{"buy_price_".$product->id}}>{{ $product->buy_price }}</span>
-                                            <a class="bg-colorfourth1 px-4 py-1 w-full text-white rounded-full flex md:hidden max-w-fit cursor-pointer hover:scale-105 transition-transform">
-                                                خرید
-                                              </a>
-                                          </td>
-                                              <td class="oneLine text-lengh w-24 sm:w-[25%] text-center md:border-l font-bold text-xs xl:text-base text-colorthird1 flex flex-col items-center">
-                                            <span id={{"sell_price_".$product->id}}>{{ $product->sell_price }}</span>
-                                            <a class="bg-colorthird1 px-4 py-1 w-full text-white rounded-full flex md:hidden max-w-fit cursor-pointer hover:scale-105 transition-transform">
-                                                فروش
-                                              </a>
-                                          </td>
+{{--                                                  <tr class="flex flex-row justify-between items-center bg-slate-100 w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative">--}}
 
-                                              <td class="hidden md:flex xl:flex-row flex-col items-center justify-center oneLine w-36 sm:w-[20%] gap-1">
-                                              <button id={{"button_buy_price_".$product->id}} onclick="open_trade_page({{ $product->id }},'buy')" class="bg-colorfourth1 disable_btn px-5 py-2 w-full text-white rounded-full flex max-w-fit cursor-pointer hover:scale-105  transition-transform" @if($market=="closed" || $product->buy_status=='0') disabled @endif  >
-                                                خرید
-                                              </button>
-                                              <button id={{"button_sell_price_".$product->id}} onclick="open_trade_page({{ $product->id }},'sell')" class="bg-colorthird1 px-5 py-2 w-full text-white rounded-full flex max-w-fit cursor-pointer hover:scale-105 transition-transform" @if($market=="closed" || $product->sell_status=='0') disabled @endif  >
-                                                فروش
-                                              </button>
-                                          </td>
-                                      </tr>
-                                              @endif
+{{--                                                    <td class="border-l sm:w-[30%] text-center w-24 break-words">{{ $product->title }}</td>--}}
+{{--                                                    <td class="oneLine text-lengh w-24 sm:w-[25%] text-center border-l font-bold text-xs xl:text-base text-colorfourth1 flex flex-col items-center">--}}
+{{--                                                        <span id={{"buy_price_".$product->id}}>{{ $product->buy_price }}</span>--}}
+{{--                                                            <a class="bg-colorfourth1 px-4 py-1 w-full text-white rounded-full flex md:hidden max-w-fit cursor-pointer hover:scale-105 transition-transform">--}}
+{{--                                                خرید--}}
+{{--                                                            </a>--}}
+{{--                                                    </td>--}}
+{{--                                                    <td class="oneLine text-lengh w-24 sm:w-[25%] text-center md:border-l font-bold text-xs xl:text-base text-colorthird1 flex flex-col items-center">--}}
+{{--                                                        <span id={{"sell_price_".$product->id}}>{{ $product->sell_price }}</span>--}}
+{{--                                                            <a class="bg-colorthird1 px-4 py-1 w-full text-white rounded-full flex md:hidden max-w-fit cursor-pointer hover:scale-105 transition-transform">--}}
+{{--                                                فروش--}}
+{{--                                                            </a>--}}
+{{--                                                    </td>--}}
+{{--                                                    <td class="hidden md:flex xl:flex-row flex-col items-center justify-center oneLine w-36 sm:w-[20%] gap-1">--}}
+{{--                                                        <button id={{"button_buy_price_".$product->id}} onclick="open_trade_page({{ $product->id }},'buy')" class="bg-colorfourth1 disable_btn px-5 py-2 w-full text-white rounded-full flex max-w-fit cursor-pointer hover:scale-105  transition-transform" @if($market=="closed" || $product->buy_status=='0') disabled @endif  >--}}
+{{--                                                خرید--}}
+{{--                                                        </button>--}}
+{{--                                                        <button id={{"button_sell_price_".$product->id}} onclick="open_trade_page({{ $product->id }},'sell')" class="bg-colorthird1 px-5 py-2 w-full text-white rounded-full flex max-w-fit cursor-pointer hover:scale-105 transition-transform" @if($market=="closed" || $product->sell_status=='0') disabled @endif  >--}}
+{{--                                                فروش--}}
+{{--                                                        </button>--}}
+{{--                                                    </td>--}}
+{{--                                      </tr>--}}
 
-                                          @endforeach
                                   </tbody>
                                 </table>
                             </div>
@@ -96,13 +93,82 @@
     </div>
 @endsection
 @section('scripts')
-    <script>
-        function open_trade_page(product_id,type)
-        {
-            window.open('user-order/'+product_id+"/"+type);
-        }
-    </script>
     <script src="{{ url("/js/menutoggle.js")}}"></script>
     <script src="{{ url("/js/menu-toggle.js")}}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{{url('/js/jquery.dataTables.min.js')}}"></script>
+    <script>
+        function open_trade_page(product_id,type)
+        {
+            console.log("here")
+            window.open('user-order/'+product_id+"/"+type);
+        }
+        $(document).ready(function() {
+            // $('.select2').select2();
+            let laravel_datatable;
+            filterList();
+        });
+
+        function filterList() {
+            console.log("filter list")
+            laravel_datatable = $('#products_datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                responsive: true,
+                paging: true,
+                autoWidth: false,
+                "order": [[1, "desc"]],
+                ajax:({
+                    url : 'customer-list-products',
+                    type : 'GET',
+                }),
+                columns: [
+                    {
+                        "data": null, "sortable": false, searchable: false, orderable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {data: 'title', name: 'title', orderable: true, searchable: true},
+                    {data: 'buy_price', name: 'buy_price', orderable: true, searchable: false},
+                    {data: 'sell_price', name: 'sell_price', orderable: true, searchable: false},
+                    {data: 'action', name: 'action', orderable: true, searchable: false},
+                ],
+                "columnDefs": [
+                    { className: "border-l sm:w-[30%] text-center w-24 break-words", "targets": [ 0 ] },
+                    { className: "oneLine text-lengh w-24 sm:w-[25%] text-center border-l font-bold text-xs xl:text-base text-colorfourth1 flex flex-col items-center", "targets": [ 1 ] },
+                    { className: "oneLine text-lengh w-24 sm:w-[25%] text-center md:border-l font-bold text-xs xl:text-base text-colorthird1 flex flex-col items-center", "targets": [ 2 ] },
+                    { className: "hidden md:flex xl:flex-row flex-col items-center justify-center oneLine w-36 sm:w-[20%] gap-1" , "targets": [ 3 ] },
+                ],
+                language: {
+                    "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
+                    "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                    "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+                    "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "نمایش _MENU_ رکورد",
+                    "sLoadingRecords": "در حال بارگزاری...",
+                    "sProcessing": "در حال پردازش...",
+                    "sSearch": "جستجو:",
+                    "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
+                    "oPaginate": {
+                        "sFirst": "ابتدا",
+                        "sLast": "انتها",
+                        "sNext": "بعدی",
+                        "sPrevious": "قبلی"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
+                        "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+                    }
+                }
+            });
+
+        }
+    </script>
+
+
 @endsection

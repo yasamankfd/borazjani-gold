@@ -61,7 +61,7 @@
             </a>
         </li>
         <li :class="customer ? 'bg-colorsecondry1' : 'bg-transparent'" class="pr-5 relative group">
-            <a  @click="dashboard=false, information=false, managemarket=false, orders=false, transaction=false, customer=true,users=false, setting=false, profile=false" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
+            <a href="{{ route("admin-manage-customers") }}" @click="dashboard=false, information=false, managemarket=false, orders=false, transaction=false, customer=true,users=false, setting=false, profile=false" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
                 <span class="icon relative block text-center">
                     <img src="{{ url("/img/customers-icon.svg")}}" alt="" class="">
                 </span>
