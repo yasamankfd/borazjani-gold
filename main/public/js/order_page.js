@@ -45,6 +45,8 @@ function change_operation(type,buy_price,sell_price) {
     var submit_buy_order = document.getElementById("submit_buy_order");
     var submit_sell_order = document.getElementById("submit_sell_order");
 
+    var operation_type_div = document.getElementById("operation_type_div");
+
     document.getElementById("input_price").reset;
     document.getElementById("amount").reset;
 
@@ -63,6 +65,8 @@ function change_operation(type,buy_price,sell_price) {
             console.log("1")
             console.log(status)
             product_fee.value = sell_price;
+            operation_type_div.classList.add("bg-colorthird1/70");
+            operation_type_div.classList.remove("bg-colorfourth1/70");
             submit_buy_order.classList.add("hidden") ;
             submit_sell_order.classList.remove("hidden");
             buy_section.hidden = true;
@@ -77,6 +81,8 @@ function change_operation(type,buy_price,sell_price) {
         {
             console.log("2")
             status = document.getElementById("product_buy_status");
+            operation_type_div.classList.add("bg-colorfourth1/70");
+            operation_type_div.classList.remove("bg-colorthird1/70");
             console.log(status)
             product_fee.value = buy_price;
             submit_sell_order.classList.add("hidden") ;

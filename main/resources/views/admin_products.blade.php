@@ -60,7 +60,7 @@
                  </span>
             </span>
             <!-- ردیف اول  -->
-            <form id="product_form" action="{{ route('product-create') }}" method="POST" id="create_product_form">
+            <form id="create_product_form" method="POST" id="create_product_form">
                 @csrf
                 <span class="flex flex-col items-center sm:flex-row gap-2">
                 <span class="w-full flex flex-col lg:flex-row gap-2">
@@ -78,8 +78,7 @@
                             class="selectpicker" style="width: 100%"
                             data-placeholder="انتخاب کنید"
                             data-allow-clear="false"
-                            title="Select city...">
-                        <option></option>
+                            title="Select unit...">
                         <option>گرم</option>
                         <option>تعداد</option>
                         </select>
@@ -109,20 +108,19 @@
             <span class="flex flex-col sm:flex-row gap-2">
                     <span class="w-full flex flex-col justify-center items-center jus lg:flex-row gap-2">
                         <label class="flex gap-2 items-center justify-center cursor-pointer">
-                            <span class="text-sm font-medium text-gray-900 dark:text-gray-300">فعال</span>
+                            <span class="text-sm font-medium text-gray-900 dark:text-gray-300">غیرفعال</span>
                             <input onclick="change_modal_status_value('modal_product_status')" name="modal_product_status" id="modal_product_status" type="checkbox" value="" class="sr-only peer">
                             <div class="relative w-11 h-6 bg-colorthird1 peer-focus:outline-none peer-focus:ring-4 dark:peer-focus:ring-colorthird1 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-colorfourth1"></div>
-                            <span class="text-sm font-medium text-gray-900 dark:text-gray-300">غیرفعال</span>
+                            <span class="text-sm font-medium text-gray-900 dark:text-gray-300">فعال</span>
                         </label>
                     </span>
                 </span>
             <input name="modal_product_id" id="modal_product_id" class="hidden">
-
+            </form>
             <div class="flex flex-col sm:flex-row justify-end gap-2 mt-3 w-full">
-                <button type="submit" class="min-w-[100px] text-center bg-colorsecondry1 text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm">ثبت</button>
+                <button onclick="create_product()" class="min-w-[100px] text-center bg-colorsecondry1 text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm">ثبت</button>
                 <button onclick="close_modal()" class="min-w-[100px] bg-colorprimary text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm text-center">بازگشت</button>
             </div>
-            </form>
         </div>
     </div>
 
@@ -134,11 +132,61 @@
 <script src="{{ url("/js/menu-toggle.js")}}"></script>
 <script src="{{url('/js/jquery.dataTables.min.js')}}"></script>
 <script>
+    let laravel_datatable;
     $(document).ready(function() {
         // $('.select2').select2();
-        let laravel_datatable;
+
         filterList();
     });
+
+    function create_product()
+    {
+        console.log("heerererre");
+        // let formData = new FormData(document.getElementById('create_product_form'));
+        let _url        = 'product-create';
+        let formData    = new FormData($("#create_product_form")[0]);
+        console.log(formData)
+
+        // var status_checkbox = document.getElementById("modal_product_status");
+        // var title = document.getElementById("modal_product_title").value;
+        // var unit = document.getElementById("modal_product_unit").value;
+        // var buy_price = document.getElementById("modal_product_buy_price").value;
+        // var sell_price = document.getElementById("modal_product_sell_price").value;
+        // var modal_product_id = document.getElementById("modal_product_id").value;
+        //
+        // var status = status_checkbox.checked === true ? 1 : 0 ;
+        //
+        // formData.append('title', title);
+        // formData.append('unit', unit);
+        // formData.append('status', status);
+        // formData.append('buy_price', buy_price);
+        // formData.append('sell_price', sell_price);
+        // formData.append('id', modal_product_id);
+
+        // Make an Ajax request using Fetch API
+
+        $.ajax({
+            type:'POST',
+            url: _url,
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.code === 200) {
+                    if (response.id != null) {
+                        console.log("warning");
+                    } else {
+                        console.log("success");
+                    }
+                    laravel_datatable.ajax.reload(null, false);
+                    close_modal();
+                }
+            },
+            error: function (response) {
+                handleErrorResponse(response);
+            }
+        });
+    }
 
     function filterList() {
         console.log("filter list")
@@ -151,7 +199,7 @@
             autoWidth: false,
             "order": [[1, "desc"]],
             ajax:({
-                url : 'admin-base-info-list-products',
+                url : 'admin-list-products',
                 type : 'GET',
             }),
             columns: [
@@ -228,9 +276,10 @@
                         $('#modal_product_title').val(response.title);
                         $('#modal_product_buy_price').val(response.buy_price);
                         $('#modal_product_sell_price').val(response.sell_price);
-                        $('#modal_product_id').val(response.id);
+                        $('#modal_product_id').val(product_id);
 
                         unit_select = document.getElementById("modal_product_unit");
+                        console.log(unit_select)
                         product_status = response.status;
                         unit = response.unit;
                         console.log(unit)
@@ -244,45 +293,10 @@
                         status_checkbox.checked = product_status === 1 ? true: false;
 
                         $('#create_product_modal').removeClass('hidden');
-                    }else alert('محصول یافت نشد!')
+                    }else alert('محصول یافت نشد!');
                 }
             }
         });
-    }
-    function create_product()
-    {
-        console.log("heerererre");
-        let formData = new FormData(document.getElementById('create_product_form'));
-
-        var status_checkbox = document.getElementById("modal_product_status");
-        var title = document.getElementById("modal_product_title").value;
-        var unit = document.getElementById("modal_product_unit").value;
-        var buy_price = document.getElementById("modal_product_buy_price").value;
-        var sell_price = document.getElementById("modal_product_sell_price").value;
-        var modal_product_id = document.getElementById("modal_product_id").value;
-
-        var status = status_checkbox.checked === true ? 1 : 0 ;
-
-        formData.append('title', title);
-        formData.append('unit', unit);
-        formData.append('status', status);
-        formData.append('buy_price', buy_price);
-        formData.append('sell_price', sell_price);
-        formData.append('id', modal_product_id);
-
-        // Make an Ajax request using Fetch API
-        fetch('product-create', {
-            method: 'POST',
-            body: formData,
-        })
-            .then(response => response.json())
-            .then(data => {
-                // Handle the response data
-                console.log(JSON.stringify(data));
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
     }
 
 

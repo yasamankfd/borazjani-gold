@@ -12,6 +12,6 @@ class CustomerOrdersController extends Controller
 {
     public function index($user_id){
         $orders = Orders::where('user_id' , $user_id)->get();
-        return view('customer_orders',compact('orders'));
+        return view('user_live_orders',compact('orders'));
     }
 }

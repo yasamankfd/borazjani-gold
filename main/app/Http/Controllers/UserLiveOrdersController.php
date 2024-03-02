@@ -9,14 +9,16 @@ use Illuminate\Support\Facades\Log;
 
 class UserLiveOrdersController extends Controller
 {
-    public function index($user_id)
+    public function index()
     {
+        $user_id = 1;
         $market = Setting::where("s_key","market_status")->value('s_value');
-        $orders = Orders::where('user_id' , $user_id)->orderBy('created_at', 'desc')->get();
-        return view('user_live_orders',compact('orders','market' ,'user_id'));
+//        $orders = Orders::where('user_id' , $user_id)->orderBy('created_at', 'desc')->get();
+        return view('user_live_orders',compact('market' ,'user_id'));
     }
-    public function list_orders($user_id)
+    public function list_orders()
     {
+        $user_id = 1;
         Log::debug("herereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
         $orders = Orders::where("user_id",$user_id)->orderBy('created_at', 'desc')->get();
         return datatables()->of($orders)

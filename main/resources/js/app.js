@@ -59,8 +59,10 @@ const app = new Vue({
                     }else{
                         e.products.original.forEach(function(product){
                             if(window.location.href.includes('dashboard')){
-                                document.getElementById('buy_price_'+product.id).innerText = product.buy_price;
-                                document.getElementById('sell_price_'+product.id).innerText = product.sell_price;
+                                console.log('buy_price_'+product.id)
+                                console.log('sell_price_'+product.id)
+                                document.getElementById('buy_price_'+product.id).textContent = product.buy_price;
+                                document.getElementById('sell_price_'+product.id).textContent = product.sell_price;
 
 
                                 let button_buy_status = document.getElementById("button_buy_price_"+product.id);

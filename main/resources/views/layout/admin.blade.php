@@ -16,7 +16,7 @@
             </a>
         </li>
         <li :class="information ? 'bg-colorsecondry1' : 'bg-transparent'" class="pr-5 relative group">
-            <a href="{{ route("base-information") }}" @click="dashboard=false, information=true, managemarket=false, orders=false, transaction=false, customer=false,users=false, setting=false, profile=false" class="cursor-pointer flex items-center justify-between items-center relative w-full p-2 rounded-r-full">
+            <a href="{{ route("admin-products") }}" @click="dashboard=false, information=true, managemarket=false, orders=false, transaction=false, customer=false,users=false, setting=false, profile=false" class="cursor-pointer flex items-center justify-between items-center relative w-full p-2 rounded-r-full">
                 <span class="flex gap-7">
                     <span class="icon relative block text-center">
                         <img src="{{ url("/img/information-icon.svg")}}" alt="" class="">
@@ -44,7 +44,7 @@
                     <img src={{ url("/img/orders-icon.svg")}} alt="" class="">
                 </span>
                 <span x-show="toggle" x-transition.duration.300ms class="relative block text-start whitespace-nowrap font-yekan text-sm hover:scale-105 transition-all">سفارشات جاری</span>
-                <span class="absolute left-5 bottom-2 bg-colorthird1 rounded-full w-6 h-6 flex justify-center z-20 font-extralight">
+                <span id="num_of_live_orders" class="absolute left-5 bottom-2 bg-colorthird1 rounded-full w-6 h-6 flex justify-center z-20 font-extralight">
                     15
                 </span>
                 <span class="absolute left-5 bottom-2 bg-colorthird1 rounded-full w-6 h-6 flex justify-center animate-ping">

@@ -157,7 +157,21 @@
     </div>
 @endsection
 @section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script src="{{ url("/js/select-searchable.js")}}"></script>
+    <script src="{{ url("/js/menutoggle.js")}}"></script>
+    <script src="{{ url("/js/menu-toggle.js")}}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            // $('.select2').select2();
+            let laravel_datatable;
+            id = document.getElementById("user_id").value;
+            filterListBuy(id);
+            filterListSell(id)
+        });
+
         function change_list(type)
         {
             buy_section = document.getElementById("buy_section");
@@ -174,14 +188,6 @@
             }
 
         }
-
-        $(document).ready(function() {
-            // $('.select2').select2();
-            let laravel_datatable;
-            id = document.getElementById("user_id").value;
-            filterListBuy(id);
-            filterListSell(id)
-        });
 
         function filterListBuy(id) {
             console.log("filter list")
@@ -313,9 +319,6 @@
 
         }
     </script>
-    <script src="{{ url("/js/select-searchable.js")}}"></script>
-    <script src="{{ url("/js/menutoggle.js")}}"></script>
-    <script src="{{ url("/js/menu-toggle.js")}}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
+
 
 @endsection

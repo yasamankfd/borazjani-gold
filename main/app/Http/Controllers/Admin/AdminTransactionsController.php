@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Orders;
-use App\Models\Products;
+use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Models\Trades;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class AdminTransactionsController extends Controller
 {
@@ -20,7 +17,7 @@ class AdminTransactionsController extends Controller
     }
     public function list_transactions_buy()
     {
-        $orders = Trades::where('type', 'buy')->get();
+        $orders = Trades::where('type', 'buy')->orderBy('created_at', 'asc')->get();
         return datatables()->of($orders)
             ->addIndexColumn()
             ->setRowClass(function () {
@@ -68,7 +65,7 @@ class AdminTransactionsController extends Controller
 
     public function list_transactions_sell()
     {
-        $orders = Trades::where('type', 'sell')->get();
+        $orders = Trades::where('type', 'sell')->orderBy('created_at', 'desc')->get();
         return datatables()->of($orders)
             ->addIndexColumn()
             ->setRowClass(function () {

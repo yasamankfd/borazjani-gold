@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Events\MessageNotification;
-use App\Models\Products;
+use App\Http\Controllers\Controller;
 use App\Models\Setting;
-use App\Models\Trades;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;

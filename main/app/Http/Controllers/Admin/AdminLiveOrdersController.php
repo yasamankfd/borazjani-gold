@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Orders;
 use App\Models\Setting;
 use App\Models\Trades;
@@ -61,23 +62,29 @@ class AdminLiveOrdersController extends Controller
                 Log::debug($passedTime);
 //                $this.$this->checkOrderTime()
 
-                if ($this->checkOrderTime($row->created_at)) {
+                if ($this->checkOrderTime($row->created_at) && $row->status != 2 ) {
                     return '<td>
-                                <form method="POST" action="'.route('admin-save-order').'">
+                                <form id="save_order_form" method="POST">
                                                    ' . csrf_field() . '
                                                   <input id="order_id" name="order_id" value="'.$row->id.'" class="hidden">
-                                                  <button type="submit"  class="bg-colorprimary px-5 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base cursor-pointer">
-                                                تایید
-                                                  </button>
                                 </form>
-                        </td>';
+                                <button onclick="open_create_modal('.$row->id.')" class="bg-colorprimary px-5 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base cursor-pointer">
+                                                تایید
+                                </button>
+
+                            </td>';
                 } else {
-                    return '<td>
-                                <label>پایان یافته</label>
-                        </td>';                }
-
-
-
+                    if($row->status == 2)
+                    {
+                        return '<td>
+                                    <label>ثبت شده</label>
+                                </td>';
+                    }else{
+                        return '<td>
+                                    <label>پایان یافته</label>
+                                </td>';
+                    }
+                }
 
             })
             ->rawColumns(['user','title','value','fee','type','totalPrice','action','status'])
@@ -114,6 +121,7 @@ class AdminLiveOrdersController extends Controller
             "user_id" => $order->user_id,
             "product_id" => $order->product_id
         ]);
-        return redirect()->route('admin-liveorders', );
+        return response()->json(['code'=>200], 200);
+
     }
 }

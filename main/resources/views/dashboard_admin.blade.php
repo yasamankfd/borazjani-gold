@@ -119,7 +119,6 @@
                     <form action="{{ route("product-edit")}}" id="edit_product_modal" method="POST">
                         @csrf
                     </form>
-
                     <button onclick="submit_form(1 , 2)" class="min-w-[100px] text-center bg-colorsecondry1 text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm">ویرایش</button>
                     <button onclick="closeModal()" class="min-w-[100px] bg-colorprimary text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm text-center">بازگشت</button>
                 </div>
@@ -201,11 +200,12 @@
                     }
                 }
             });
-
         }
         function submit_form(product_id , type) {
             // Get form data
-            let formData = new FormData(document.getElementById('edit_product'));
+            let _url        = 'product-edit';
+            let formData    = new FormData($("#edit_product")[0]);
+            // let formData = new FormData(document.getElementById('edit_product'));
             if (type === 2)
             {
                 product_id = document.getElementById("modal_product_id").value;
@@ -237,19 +237,28 @@
             formData.append('sell_price', sell_price);
             formData.append('product_id', product_id);
 
-            // Make an Ajax request using Fetch API
-            fetch('product-edit', {
-                method: 'POST',
-                body: formData,
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // Handle the response data
-                    console.log(JSON.stringify(data));
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+
+            $.ajax({
+                type:'POST',
+                url: _url,
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.code === 200) {
+                        if (response.id != null) {
+                            console.log('warning');
+                        } else {
+                            console.log('success');
+                        }
+                        laravel_datatable.ajax.reload(null, false);
+                        close_modal();
+                    }
+                },
+                error: function (response) {
+                    handleErrorResponse(response);
+                }
+            });
         }
 
         function change_market_status()

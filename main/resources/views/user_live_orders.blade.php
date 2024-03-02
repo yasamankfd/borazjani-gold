@@ -39,7 +39,7 @@
                         </span>
                         <div class="gap-2 rounded-xl mt-5 pb-10">
                             <!-- ---------------------- جدول سفارشات جاری  ---------------------  -->
-                            <input class="hidden" id="user_id" value="{{$user_id}}">
+                            <input class="hidden" id="user_id" value="{{ $user_id }}">
                               <table id="products_datatable" x-data="{ detailrow:false }" class="space-y-3 block overflow-x-auto pb-5">
                                   <thead class="w-full flex">
                                       <tr class="flex justify-between items-center w-fit md:w-full bg-slate-100 font-normal px-1 md:px-5 py-3 rounded-lg hover:shadow-gray-200/50 hover:shadow-lg text-xs lg:text-sm">
@@ -141,14 +141,14 @@
     $(document).ready(function() {
         // $('.select2').select2();
         let laravel_datatable;
-        id = document.getElementById("user_id").value;
+        let id = document.getElementById("user_id").value;
 
         filterList(id);
     });
 
     function filterList(id) {
         console.log("filter list")
-        console.log($id)
+        console.log(id)
         laravel_datatable = $('#products_datatable').DataTable({
             processing: true,
             serverSide: true,
@@ -158,7 +158,7 @@
             autoWidth: false,
             "order": [[1, "desc"]],
             ajax:({
-                url : 'user-list-orders/'+$id,
+                url : 'user-list-orders',
                 type : 'GET',
             }),
             columns: [

@@ -30,10 +30,10 @@ class CustomerDashboardController extends Controller
 
             ->addColumn('buy_price', function ($row) {
 
-                return '<td>'.$row->buy_price.'</td>';
+                return '<td><span id="buy_price_'.$row->id.'">'.$row->buy_price.'</span></td>';
             })
             ->addColumn('sell_price', function ($row) {
-                return '<td>'.$row->sell_price.'</td>';
+                return '<td><span id="sell_price_'.$row->id.'">'.$row->sell_price.'</span></td>';
             })
             ->addColumn('action', function ($row) {
                 $market = Setting::where("s_key","market_status")->value('s_value');

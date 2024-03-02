@@ -29,7 +29,7 @@
                             </div>
                             <!-- -------------------------- نمایش اطلاعیه ---------------------------  -->
 
-                            <div x-show="buy" class="w-full max-w-sm mx-auto flex justify-center bg-colorfourth1/70 text-white border border-[#5fbb85] rounded-md p-1 mt-3">
+                            <div id="operation_type_div" x-show="buy" class="w-full max-w-sm mx-auto flex justify-center @if($type == "buy") bg-colorfourth1/70 @else bg-colorthird1/70 @endif  text-white border border-[#5fbb85] rounded-md p-1 mt-3">
                                     <span class=" py-1 px-2 text-lg text-center">
                                         <p class="font-light animate-pulse text-sm md:text-lg leading-6 md:leading-7 text-center">
                                             شما در حال انجام عملیات

@@ -88,12 +88,12 @@
                     </span>
 </div>
 <!-- ----------مودال تاییدیه  ------------------  -->
-<div  x-transition.duration.500ms class="bg-black/50  hidden backdrop-blur-sm fixed pb-10 top-0 w-full h-screen flex items-center px-5 z-10">
+<div id="modal_submit" x-transition.duration.500ms class="bg-black/50  hidden backdrop-blur-sm fixed pb-10 top-0 w-full h-screen flex items-center px-5 z-10">
     <div class="bg-white w-full sm:max-w-lg max-h-[70vh] sm:max-h-full mx-auto p-5 rounded-lg flex flex-col gap-3 overflow-y-auto">
             <span class="flex flex-row justify-between items-center border-b pb-2">
                  <span>تاییدیه نهایی</span>
                  <span x-on:click="modal1 = false" class="bg-gray-100 p-1 sm:p-2 rounded-md cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <svg onclick="close_modal()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                       </svg>
                  </span>
@@ -105,8 +105,8 @@
             </span>
 
         <div class="flex flex-col sm:flex-row justify-center gap-2 mt-3 w-full">
-            <a class="min-w-[100px] text-center bg-colorsecondry1 text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm">بله</a>
-            <a class="min-w-[100px] bg-colorprimary text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm text-center">خیر</a>
+            <button onclick="submit_order()" class="min-w-[100px] text-center bg-colorsecondry1 text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm">بله</button>
+            <button onclick="close_modal()" class="min-w-[100px] bg-colorprimary text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm text-center">خیر</button>
         </div>
     </div>
 </div>
@@ -120,11 +120,21 @@
 
     <script>
 
+
         $(document).ready(function() {
-            // $('.select2').select2();
             let laravel_datatable;
             filterList();
         });
+
+        function open_create_modal(id)
+        {
+            $('#modal_submit').removeClass('hidden');
+            $('#order_id').val(id);
+        }
+        function close_modal() {
+            $("#modal_submit").addClass("hidden");
+
+        }
 
         function filterList() {
             console.log("filter list")
@@ -198,6 +208,7 @@
             });
 
         }
+
         function startCountdown(time , id ) {
             now = new Date().getTime();
             created = new Date(time).getTime();
@@ -225,8 +236,50 @@
                 }, 1000);
             }
         }
+
         function yourJavaScriptFunction(row, data, dataIndex) {
             startCountdown(data.created_at, data.id);
+        }
+
+        function submit_order() {
+
+            let _url        = 'admin-save-order';
+            let formData    = new FormData($("#save_order_form")[0]);
+
+            $.ajax({
+                type:'POST',
+                url: _url,
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.code === 200) {
+                        if (response.id != null) {
+                            console.log('warning');
+                        } else {
+                            console.log('success');
+                        }
+                        laravel_datatable.ajax.reload(null, false);
+                        close_modal();
+                    }
+                },
+                error: function (response) {
+                    handleErrorResponse(response);
+                }
+            });
+        }
+
+        function showAlert(text, type) {
+            $('#alert_content_' + type).html(text);
+            $('#alert-' + type).removeClass("hidden");
+            setTimeout(function () {
+                $('#alert-' + type).addClass("hidden");
+            }, 3000);
+        }
+
+        function live_order_notification()
+        {
+
         }
 
     </script>
