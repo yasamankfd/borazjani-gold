@@ -238,6 +238,8 @@
       <path value="$PROJECT_DIR$/main/vendor/symfony/polyfill-php73" />
       <path value="$PROJECT_DIR$/main/vendor/yajra/laravel-datatables-oracle" />
       <path value="$PROJECT_DIR$/main/vendor/carbondate/carbon" />
+      <path value="$PROJECT_DIR$/main/vendor/morilog/jalali" />
+      <path value="$PROJECT_DIR$/main/vendor/beberlei/assert" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.0">

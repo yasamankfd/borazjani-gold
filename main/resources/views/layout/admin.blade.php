@@ -45,7 +45,7 @@
                 </span>
                 <span x-show="toggle" x-transition.duration.300ms class="relative block text-start whitespace-nowrap font-yekan text-sm hover:scale-105 transition-all">سفارشات جاری</span>
                 <span id="num_of_live_orders" class="absolute left-5 bottom-2 bg-colorthird1 rounded-full w-6 h-6 flex justify-center z-20 font-extralight">
-                    15
+                    {{ $num_of_orders }}
                 </span>
                 <span class="absolute left-5 bottom-2 bg-colorthird1 rounded-full w-6 h-6 flex justify-center animate-ping">
 
@@ -85,7 +85,7 @@
             </a>
         </li>
         <li :class="profile ? 'bg-colorsecondry1' : 'bg-transparent'" class="pr-5 relative group">
-            <a  @click="dashboard=false, information=false, managemarket=false, orders=false, transaction=false, customer=false,users=false, setting=false, profile=true" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
+            <a href="{{ route("profile-admin") }}" @click="dashboard=false, information=false, managemarket=false, orders=false, transaction=false, customer=false,users=false, setting=false, profile=true" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
                 <span class="icon relative block text-center">
                     <img src="{{ url("/img/user-icon.svg")}}" alt="" class="">
                 </span>

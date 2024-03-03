@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminManageCustomersController;
 use App\Http\Controllers\Admin\AdminManageUsersController;
 use App\Http\Controllers\Admin\AdminMarketChangeController;
 use App\Http\Controllers\Admin\AdminProducts;
+use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\AdminTransactionsController;
 use App\Http\Controllers\Customer\CustomerDashboardController;
 use App\Http\Controllers\Customer\CustomerLiveOrdersController;
@@ -29,6 +30,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//admin profile
+Route::get("/profile-admin",[AdminProfileController::class,"index"])->name("profile-admin");
+Route::post('/admin-edit-profile',[AdminProfileController::class,'create'])->name("admin-edit-profile");
+
 
 //admin dashboard
 Route::patch("/admin",[AdminDashboardController::class,"update"])->name('admin');
@@ -111,7 +116,7 @@ Route::get('/update', [RefreshData::class,'getUpdatedData']);
 
 
 
-Route::get('/order/{product}/{type}',[OrderController::class,'index']);
+//Route::get('/order/{product}/{type}',[OrderController::class,'index']);
 Route::post('/order',[CustomerSubmitOrder::class,'store'])->name('save-temp-order');
 Route::get("/customer-order/{product}/{type}",[CustomerSubmitOrder::class,"index"]);
 

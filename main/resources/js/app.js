@@ -41,7 +41,7 @@ const app = new Vue({
             console.log(e.type)
                 if(e.type === "market_price"){
 
-                    if(window.location.href.includes('user-order'))
+                    if(window.location.href.includes('customer-order'))
                     {
                         var product_id = document.getElementById("product_id").value;
                         var p = e.products.original.find(p => p.id.toString() === product_id);
@@ -77,33 +77,19 @@ const app = new Vue({
                         market_status_span_color.classList.add("bg-colorthird1");
                         market_status_span.innerText = "بسته";
                     }
-                    // if (window.location.href.includes('customer-dashboard'))
                     {
                         if (window.location.href.includes('customer-dashboard')) {
                             var dataTable = $('#products_datatable').DataTable();
                             dataTable.draw();
-                            // var market_status_span_color = document.getElementById('market_status_span_color');
-                            // var market_status_span = document.getElementById('market_status_span');
                             let market_status = e.market_status.original !== "open";
 
-
-                            // if (!market_status) {
-                            //     market_status_span_color.classList.remove("bg-colorthird1");
-                            //     market_status_span_color.classList.add("bg-colorfourth1");
-                            //     market_status_span.innerText = "باز";
-                            // } else {
-                            //     market_status_span_color.classList.remove("bg-colorfourth1");
-                            //     market_status_span_color.classList.add("bg-colorthird1");
-                            //     market_status_span.innerText = "بسته";
-                            // }
 
                         } else if (window.location.href.includes('user-order')) {
                             console.log("market change listener")
 
                             var change_to_buy_button = document.getElementById("change_to_buy");
                             var change_to_sell_button = document.getElementById("change_to_sell");
-                            // var market_status_span = document.getElementById("market_status_span");
-                            // var market_status_span_color = document.getElementById('market_status_span_color');
+
                             var submit_buy_order = document.getElementById("submit_buy_order");
                             var submit_sell_order = document.getElementById("submit_sell_order");
 
@@ -115,34 +101,7 @@ const app = new Vue({
                             change_to_buy_button.disabled = market_status;
                             change_to_sell_button.disabled = market_status;
 
-                            // if (market_status) {
-                            //     market_status_span_color.classList.remove("bg-colorthird1");
-                            //     market_status_span_color.classList.add("bg-colorfourth1");
-                            //     market_status_span.innerText = "باز";
-                            // } else {
-                            //     market_status_span_color.classList.remove("bg-colorfourth1");
-                            //     market_status_span_color.classList.add("bg-colorthird1");
-                            //     market_status_span.innerText = "بسته";
-                            // }
-
                         }
-                        //     if (window.location.href.includes('user-liveorders') || window.location.href.includes('user-transactions')) {
-                        //     console.log("here");
-                        //     var market_status_span = document.getElementById("market_status_span");
-                        //     var market_status_span_color = document.getElementById('market_status_span_color');
-                        //
-                        //     let market_status = e.market_status.original !== "open";
-                        //
-                        //     if (!market_status) {
-                        //         market_status_span_color.classList.remove("bg-colorthird1");
-                        //         market_status_span_color.classList.add("bg-colorfourth1");
-                        //         market_status_span.innerText = "باز";
-                        //     } else {
-                        //         market_status_span_color.classList.remove("bg-colorfourth1");
-                        //         market_status_span_color.classList.add("bg-colorthird1");
-                        //         market_status_span.innerText = "بسته";
-                        //     }
-                        // }
                     }
                 }
             });

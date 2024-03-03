@@ -7,7 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/main/app" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/main/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
       <sourceFolder url="file://$MODULE_DIR$/main/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
-      <sourceFolder url="file://$MODULE_DIR$/main/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/main/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/main/tests/Feature" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/main/tests/Unit" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
@@ -239,6 +239,8 @@
       <excludeFolder url="file://$MODULE_DIR$/main/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/main/vendor/yajra/laravel-datatables-oracle" />
       <excludeFolder url="file://$MODULE_DIR$/main/vendor/carbondate/carbon" />
+      <excludeFolder url="file://$MODULE_DIR$/main/vendor/beberlei/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/main/vendor/morilog/jalali" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

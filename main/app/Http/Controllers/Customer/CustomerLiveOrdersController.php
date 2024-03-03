@@ -7,6 +7,7 @@ use App\Models\Orders;
 use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Morilog\Jalali\Jalalian;
 
 class CustomerLiveOrdersController extends Controller
 {
@@ -20,7 +21,7 @@ class CustomerLiveOrdersController extends Controller
     {
         $user_id = 1;
         Log::debug("herereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-        $orders = Orders::where("user_id",$user_id)->orderBy('created_at', 'desc')->get();
+        $orders = Orders::orderBy('created_at', 'desc')->where("user_id",$user_id)->get();
         return datatables()->of($orders)
             ->addIndexColumn()
             ->setRowClass(function () {
@@ -48,8 +49,7 @@ class CustomerLiveOrdersController extends Controller
                 return '<td>' . '<span class=" '.$class.' px-4 py-2 w-full text-white rounded-full flex max-w-fit">'.$type.'</span>' . '</td>';
             })
             ->addColumn('time', function ($row) {
-
-                return '<td>' . $row->created_at . '</td>';
+                return '<td>' . $row->dateToJalali() . '</td>';
             })
             ->addColumn('status', function ($row) {
                 if($this->checkOrderTime($row->created_at) )

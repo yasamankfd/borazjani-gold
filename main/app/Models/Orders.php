@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Morilog\Jalali\Jalalian;
 
 class Orders extends Model
 {
@@ -23,6 +25,11 @@ class Orders extends Model
     public function user() : HasOne
     {
         return $this->hasOne( User::class ,'id','user_id');
+    }
+    public function dateToJalali()
+    {
+        return Jalalian::fromCarbon(Carbon::parse($this->created_at))->format('Y-m-d H:i:s');
+
     }
 
 }

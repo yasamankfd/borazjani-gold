@@ -86,6 +86,7 @@
     <script>
 
 
+
         $(document).ready(function() {
             let laravel_datatable;
             filterList();
@@ -259,10 +260,7 @@
                 }
             });
         }
-        function live_order_notification()
-        {
 
-        }
 
     </script>
 @endsection

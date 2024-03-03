@@ -59,7 +59,7 @@
             </span>
 
             <!-- ردیف اول  -->
-            <form id="user_form" action="{{ route("user-create") }}" method="POST" enctype="multipart/form-data">
+            <form id="user_form" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input class="hidden" name="modal_user_id" id="modal_user_id">
                 <span class="flex flex-col items-center sm:flex-row gap-2">
@@ -141,11 +141,11 @@
                                 </span>
                             </span>
                 </span>
-                <div class="flex flex-col sm:flex-row justify-end gap-2 mt-3 w-full">
-                    <button type="submit" class="min-w-[100px] text-center bg-colorsecondry1 text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm">ثبت</button>
-                    <button onclick="close_modal()" class="min-w-[100px] bg-colorprimary text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm text-center">بازگشت</button>
-                </div>
             </form>
+            <div class="flex flex-col sm:flex-row justify-end gap-2 mt-3 w-full">
+                <button onclick="create_user()" class="min-w-[100px] text-center bg-colorsecondry1 text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm">ثبت</button>
+                <button onclick="close_modal()" class="min-w-[100px] bg-colorprimary text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm text-center">بازگشت</button>
+            </div>
 
 
         </div>
@@ -272,7 +272,34 @@
         });
     }
 
+    function create_user()
+    {
+        console.log("heerererre");
+        let _url        = 'user-create';
+        let formData    = new FormData($("#user_form")[0]);
 
+        $.ajax({
+            type: 'POST',
+            url: _url,
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.code === 200) {
+                    if (response.id != null) {
+                        console.log("warning");
+                    } else {
+                        console.log("success");
+                    }
+                    laravel_datatable.ajax.reload(null, false);
+                    close_modal();
+                }
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    }
 
     function change_market_status() {
         console.log('blade')
@@ -284,6 +311,8 @@
             status = "closed";
         }
         let _url = 'market-status/' + status;
+
+
 
         $.ajax({
             url: _url,

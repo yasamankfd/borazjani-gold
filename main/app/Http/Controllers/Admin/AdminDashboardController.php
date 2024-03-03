@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Orders;
 use App\Models\Products;
 use App\Models\Setting;
+use App\Models\Trades;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -16,9 +18,18 @@ class AdminDashboardController extends Controller
     {
         $products = Products::all();
         $market  =  Setting::where("s_key","market_status")->value('s_value');
-        $orders = Orders::all();
+        // Calculate the orders for 2 minutes ago
 
-        return view('admin.dashboard_admin' , compact('products','market','orders'));
+        $currentTime = Carbon::now();
+        $twoMinutesAgo = $currentTime->subMinutes(2);
+        $num_of_orders = Orders::where('created_at', '>=', $twoMinutesAgo)->where('status',0)->count();
+        $num_of_trades = Trades::all()->count();
+        return view('admin.dashboard_admin' , compact('market','num_of_orders','num_of_trades'));
+    }
+
+    public function checkOrderTime($created)
+    {
+        return Carbon::parse($created)->diffInMinutes() < 2;
     }
     public function list_dashboard_products()
     {

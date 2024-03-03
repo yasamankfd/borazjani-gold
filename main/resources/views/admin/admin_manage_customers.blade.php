@@ -52,7 +52,7 @@
                  </span>
             </span>
 
-        <form id="customer_form" action="{{ route("customer-create") }}" method="POST" enctype="multipart/form-data">
+        <form id="customer_form" method="POST" enctype="multipart/form-data">
             @csrf
             <!-- ردیف اول  -->
             <span class="flex flex-col items-center sm:flex-row gap-2">
@@ -172,12 +172,11 @@
                              </svg></div></div>
                      </div>
                 </span>
-
-            <div class="flex flex-col sm:flex-row justify-end gap-2 mt-3 w-full">
-                <button type="submit" class="min-w-[100px] text-center bg-colorsecondry1 text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm">ثبت</button>
-                <button onclick="close_modal()" class="min-w-[100px] bg-colorprimary text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm text-center">بازگشت</button>
-            </div>
         </form>
+        <div class="flex flex-col sm:flex-row justify-end gap-2 mt-3 w-full">
+            <button onclick="create_user()" class="min-w-[100px] text-center bg-colorsecondry1 text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm">ثبت</button>
+            <button onclick="close_modal()" class="min-w-[100px] bg-colorprimary text-white sm:hover:-translate-y-1 transition-transform duration-200 py-3 px-5 rounded-full cursor-pointer text-xs sm:text-sm text-center">بازگشت</button>
+        </div>
 
     </div>
     </div>@endsection
@@ -306,24 +305,8 @@
         function create_user()
         {
             console.log("heerererre");
-            let _url        = 'product-create';
-            let formData    = new FormData($("#create_product_form")[0]);
-
-            var status_checkbox = document.getElementById("modal_product_status");
-            var title = document.getElementById("modal_product_title").value;
-            var unit = document.getElementById("modal_product_unit").value;
-            var buy_price = document.getElementById("modal_product_buy_price").value;
-            var sell_price = document.getElementById("modal_product_sell_price").value;
-            var modal_product_id = document.getElementById("modal_product_id").value;
-
-            var status = status_checkbox.checked === true ? 1 : 0 ;
-
-            formData.append('title', title);
-            formData.append('unit', unit);
-            formData.append('status', status);
-            formData.append('buy_price', buy_price);
-            formData.append('sell_price', sell_price);
-            formData.append('id', modal_product_id);
+            let _url        = 'customer-create';
+            let formData    = new FormData($("#customer_form")[0]);
 
             $.ajax({
                 type: 'POST',
@@ -343,7 +326,7 @@
                     }
                 },
                 error: function (response) {
-                    handleErrorResponse(response);
+                    console.log(response);
                 }
             });
         }

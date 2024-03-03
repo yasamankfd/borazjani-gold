@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\MessageNotification;
 use App\Http\Controllers\Controller;
+use App\Models\Orders;
 use App\Models\Setting;
 use App\Models\Trades;
 use Carbon\Carbon;
@@ -15,7 +16,13 @@ class AdminTransactionsController extends Controller
     {
         $market = Setting::where("s_key","market_status")->value('s_value');
         $transactions = Trades::orderBy('created_at', 'desc')->get();
-        return view("admin.admin_transaction", compact("market", "transactions"));
+        // Calculate the orders for 2 minutes ago
+
+        $currentTime = Carbon::now();
+        $twoMinutesAgo = $currentTime->subMinutes(2);
+        $num_of_orders = Orders::where('created_at', '>=', $twoMinutesAgo)->where('status',0)->count();
+
+        return view("admin.admin_transaction", compact("market", "transactions",'num_of_orders'));
     }
     public function list_transactions_buy()
     {

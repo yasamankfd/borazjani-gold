@@ -5,14 +5,14 @@
 @section('content')
     <div class="flex justify-center gap-2 mt-5">
         <a class="relative flex flex-col justify-around gap-2 rounded-2xl py-7 px-7 cursor-pointer bg-white">
-            <span class="text-5xl text-center">26</span>
+            <span class="text-5xl text-center">{{ $num_of_trades }}</span>
             <span class="text-xs md:text-sm">تعداد معاملات</span>
 
             <span class="bg-colorprimary w-20 h-[1px] absolute bottom-14"></span>
             <span class="bg-colorsecondry1 h-[3px] absolute bottom-14 w-9"></span>
         </a>
         <a class="relative flex flex-col justify-around gap-2 rounded-2xl py-7 px-7 cursor-pointer bg-white">
-            <span class="text-5xl text-center">26</span>
+            <span class="text-5xl text-center">{{ $num_of_orders }}</span>
             <span class="text-xs md:text-sm">درخواست ها</span>
 
             <span class="bg-colorprimary w-20 h-[1px] absolute bottom-14"></span>

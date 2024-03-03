@@ -16,7 +16,7 @@ class CustomerSubmitOrder extends Controller
         $product = Products::find($product_id);
         $market = Setting::where("s_key","market_status")->value('s_value');
         $user_id = 1;
-        return view("customer_order",compact('market','products','product','type','user_id'));
+        return view("customer.customer_order",compact('market','products','product','type','user_id'));
     }
     public function store(Request $request)
     {

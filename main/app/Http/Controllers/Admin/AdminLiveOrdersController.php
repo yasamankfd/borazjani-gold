@@ -17,7 +17,12 @@ class AdminLiveOrdersController extends Controller
     {
         $orders = Orders::orderBy('created_at', 'desc')->get();
         $market = Setting::where("s_key","market_status")->value('s_value');
-        return view('admin.admin_live_orders' , compact('orders','market'));
+        // Calculate the orders for 2 minutes ago
+
+        $currentTime = Carbon::now();
+        $twoMinutesAgo = $currentTime->subMinutes(2);
+        $num_of_orders = Orders::where('created_at', '>=', $twoMinutesAgo)->where('status',0)->count();
+        return view('admin.admin_live_orders' , compact('orders','market','num_of_orders'));
     }
 
     public function list_orders()
@@ -59,7 +64,7 @@ class AdminLiveOrdersController extends Controller
             })
             ->addColumn('time', function ($row) {
 
-                return '<td>' . $row->created_at . '</td>';
+                return '<td>' . $row->dateToJalali() . '</td>';
             })
             ->addColumn('action', function ($row) {
                 $route = 'admin-save-order';

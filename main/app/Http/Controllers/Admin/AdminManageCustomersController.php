@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\MessageNotification;
 use App\Http\Controllers\Controller;
+use App\Models\Orders;
 use App\Models\Setting;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -16,8 +18,13 @@ class AdminManageCustomersController extends Controller
     {
         $users = User::all();
         $market  =  Setting::where("s_key","market_status")->value('s_value');
+        // Calculate the orders for 2 minutes ago
 
-        return view("admin.admin_manage_customers", compact("users" , "market"));
+        $currentTime = Carbon::now();
+        $twoMinutesAgo = $currentTime->subMinutes(2);
+        $num_of_orders = Orders::where('created_at', '>=', $twoMinutesAgo)->where('status',0)->count();
+
+        return view("admin.admin_manage_customers", compact("users" , "market",'num_of_orders'));
     }
     public function list_customers()
     {
@@ -94,8 +101,7 @@ class AdminManageCustomersController extends Controller
                 ]);
         Log::debug($user);
 
-        return redirect(route('admin-manage-customers'));
-    }
+        return response()->json(['code'=>200], 200);    }
 
     public function marketChange($status)
     {
