@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\MessageNotification;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Models\User;
@@ -16,7 +17,7 @@ class AdminManageCustomersController extends Controller
         $users = User::all();
         $market  =  Setting::where("s_key","market_status")->value('s_value');
 
-        return view("admin_manage_customers", compact("users" , "market"));
+        return view("admin.admin_manage_customers", compact("users" , "market"));
     }
     public function list_customers()
     {
@@ -66,10 +67,10 @@ class AdminManageCustomersController extends Controller
         $status = $status == null ? 0 : 1 ;
 
         $fileName_certificate = time()."certificate_img.".$request->modal_customer_certificate->extension();
-        $certificate_path = $request->modal_customer_certificate->storeAs("images",$fileName_certificate,"public");
+        $licence_path = $request->modal_customer_certificate->storeAs("licence",$fileName_certificate,"public");
 
         $fileName_card = time()."card_img.".$request->modal_customer_national_card->extension();
-        $card_path = $request->modal_customer_national_card->storeAs("images",$fileName_card,"public");
+        $card_path = $request->modal_customer_national_card->storeAs("card",$fileName_card,"public");
 
         $pass = $request->modal_customer_pass;
         $hashed = Hash::make($pass);
@@ -87,12 +88,23 @@ class AdminManageCustomersController extends Controller
                 'phone' => $request->modal_customer_phone,
                 'nid_serial'=> $request->modal_customer_serial,
                 'code'=> $request->modal_customer_code,
-                'certificate_img'=> $certificate_path,
+                'certificate_img'=> $licence_path,
                 'national_card_img'=> $card_path,
                 'status'=> $status,
                 ]);
         Log::debug($user);
 
         return redirect(route('admin-manage-customers'));
+    }
+
+    public function marketChange($status)
+    {
+        Log::debug($status);
+
+        $market  =  Setting::where("s_key","market_status");
+        $market->update([
+            "s_value" => $status,
+        ]);
+        event(new MessageNotification("market_status"));
     }
 }

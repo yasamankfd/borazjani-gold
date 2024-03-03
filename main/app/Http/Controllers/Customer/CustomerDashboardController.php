@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Customer;
 
+use App\Http\Controllers\Controller;
 use App\Models\Products;
 use App\Models\Setting;
-use App\Models\Trades;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class CustomerDashboardController extends Controller
@@ -14,7 +13,7 @@ class CustomerDashboardController extends Controller
     {
         $market = Setting::where("s_key","market_status")->value('s_value');
         $products = Products::all();
-        return view('dashboard' , compact('products','market'));
+        return view('customer.dashboard_customer' , compact('products','market'));
     }
     public function list_products()
     {
@@ -59,5 +58,4 @@ class CustomerDashboardController extends Controller
             ->rawColumns(['title','buy_price','sell_price','action'])
             ->make(true);
     }
-
 }

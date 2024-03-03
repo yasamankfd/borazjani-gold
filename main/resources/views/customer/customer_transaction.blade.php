@@ -1,9 +1,11 @@
+@include("includes.header")
 @extends('layout.customer')
 @section('page_title')
     معاملات انجام شده
 @endsection
 
 @section('content')
+
     <div id="app">
         <!-- ------------------- نمایش وضعیت بازار -----------------------  -->
         <div class="w-full flex justify-center border-b pb-3">
@@ -67,26 +69,7 @@
                                     </tr>
                                 </thead>
                                 <tbody x-data="{ detailrow:false }" class="space-y-1 w-full flex flex-col ">
-{{--                                @foreach( $transactions as $transaction)--}}
-{{--                                    @if($transaction->type == "buy")--}}
-{{--                                        <tr class="flex flex-row justify-between items-center bg-slate-100 w-fit md:w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative text-colorprimary/70">--}}
-{{--                                        <td class="border-l pl-5  md:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight">{{ $transaction->product->title }}</td>--}}
-{{--                                        <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal">--}}
-{{--                                          <span class="font-normal tracking-tight">{{ $transaction->value }}</span>--}}
-{{--                                          <span class="text-gray-400 font-extralight tracking-tight">گرم</span>--}}
-{{--                                        </td>--}}
-{{--                                        <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight">{{ $transaction->fee }}</td>--}}
-{{--                                        <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight">{{ $transaction->total_price }}</td>--}}
-{{--                                        <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal tracking-tight flex gap-1 justify-center">--}}
-{{--                                            <span>{{ $transaction->created_at->toDateString() }}</span>--}}
-{{--                                            <span>{{ $transaction->created_at->format('H:i:s') }}</span>--}}
-{{--                                        </td>--}}
-{{--                                        <td class="oneLine w-36 md:w-[10%] flex gap-1 justify-center font-normal tracking-tight">--}}
-{{--                                            <span>{{ $transaction->number }}</span>--}}
-{{--                                        </td>--}}
-{{--                                    </tr>--}}
-{{--                                    @endif--}}
-{{--                                @endforeach--}}
+
 
                                 </tbody>
                             </table>
@@ -126,27 +109,6 @@
                                 </thead>
                                 <tbody x-data="{ detailrow:false }" class="space-y-1 w-full flex flex-col ">
 
-{{--                                @foreach( $transactions as $transaction)--}}
-{{--                                    @if($transaction->type == "sell")--}}
-{{--                                        <tr class="flex flex-row justify-between items-center bg-slate-100 w-fit md:w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative text-colorprimary/70">--}}
-{{--                                        <td class="border-l pl-5  md:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight">{{ $transaction->product->title }}</td>--}}
-{{--                                        <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal">--}}
-{{--                                          <span class="font-normal tracking-tight">{{ $transaction->value }}</span>--}}
-{{--                                          <span class="text-gray-400 font-extralight tracking-tight">گرم</span>--}}
-{{--                                        </td>--}}
-{{--                                        <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight">{{ $transaction->fee }}</td>--}}
-{{--                                        <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight">{{ $transaction->total_price }}</td>--}}
-{{--                                        <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal tracking-tight flex gap-1 justify-center">--}}
-{{--                                            <span>{{ $transaction->created_at->toDateString() }}</span>--}}
-{{--                                            <span>{{ $transaction->created_at->format('H:i:s') }}</span>--}}
-{{--                                        </td>--}}
-
-{{--                                        <td class="oneLine w-36 md:w-[10%] flex gap-1 justify-center font-normal tracking-tight">--}}
-{{--                                            <span>{{ $transaction->number }}</span>--}}
-{{--                                        </td>--}}
-{{--                                    </tr>--}}
-{{--                                    @endif--}}
-{{--                                @endforeach--}}
                                 </tbody>
                             </table>
                             </div>
@@ -157,19 +119,22 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <script src="{{ url("/js/select-searchable.js")}}"></script>
+{{--    <script src="{{ url("/js/select-searchable.js")}}"></script>--}}
     <script src="{{ url("/js/menutoggle.js")}}"></script>
     <script src="{{ url("/js/menu-toggle.js")}}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{{url('/js/jquery.dataTables.min.js')}}"></script>
     <script>
+        let laravel_datatable_buy;
+        let laravel_datatable_sell;
+
         $(document).ready(function() {
-            // $('.select2').select2();
-            let laravel_datatable;
-            id = document.getElementById("user_id").value;
-            filterListBuy(id);
-            filterListSell(id)
+
+            // id = document.getElementById("user_id").value;
+            filterListBuy();
+            filterListSell();
         });
 
         function change_list(type)
@@ -189,9 +154,9 @@
 
         }
 
-        function filterListBuy(id) {
+        function filterListBuy() {
             console.log("filter list")
-            laravel_datatable = $('#transaction_datatable_buy').DataTable({
+            laravel_datatable_buy = $('#transaction_datatable_buy').DataTable({
                 processing: true,
                 serverSide: true,
                 destroy: true,
@@ -200,7 +165,7 @@
                 autoWidth: false,
                 "order": [[1, "desc"]],
                 ajax:({
-                    url : 'user-list-transactions-buy/'+id,
+                    url : 'customer-list-transactions-buy',
                     type : 'GET',
                 }),
                 columns: [
@@ -254,9 +219,9 @@
 
         }
 
-        function filterListSell(id) {
+        function filterListSell() {
             console.log("filter list")
-            laravel_datatable = $('#transaction_datatable_sell').DataTable({
+            laravel_datatable_sell = $('#transaction_datatable_sell').DataTable({
                 processing: true,
                 serverSide: true,
                 destroy: true,
@@ -265,7 +230,7 @@
                 autoWidth: false,
                 "order": [[1, "desc"]],
                 ajax:({
-                    url : 'user-list-transactions-sell/'+id,
+                    url : 'customer-list-transactions-sell',
                     type : 'GET',
                 }),
                 columns: [
@@ -319,6 +284,5 @@
 
         }
     </script>
-
 
 @endsection

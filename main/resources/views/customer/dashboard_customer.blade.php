@@ -59,30 +59,6 @@
                                   </thead>
                                   <tbody x-data="{ detailrow:false }" class="space-y-1 w-full flex flex-col ">
 
-{{--                                                  <tr class="flex flex-row justify-between items-center bg-slate-100 w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative">--}}
-
-{{--                                                    <td class="border-l sm:w-[30%] text-center w-24 break-words">{{ $product->title }}</td>--}}
-{{--                                                    <td class="oneLine text-lengh w-24 sm:w-[25%] text-center border-l font-bold text-xs xl:text-base text-colorfourth1 flex flex-col items-center">--}}
-{{--                                                        <span id={{"buy_price_".$product->id}}>{{ $product->buy_price }}</span>--}}
-{{--                                                            <a class="bg-colorfourth1 px-4 py-1 w-full text-white rounded-full flex md:hidden max-w-fit cursor-pointer hover:scale-105 transition-transform">--}}
-{{--                                                خرید--}}
-{{--                                                            </a>--}}
-{{--                                                    </td>--}}
-{{--                                                    <td class="oneLine text-lengh w-24 sm:w-[25%] text-center md:border-l font-bold text-xs xl:text-base text-colorthird1 flex flex-col items-center">--}}
-{{--                                                        <span id={{"sell_price_".$product->id}}>{{ $product->sell_price }}</span>--}}
-{{--                                                            <a class="bg-colorthird1 px-4 py-1 w-full text-white rounded-full flex md:hidden max-w-fit cursor-pointer hover:scale-105 transition-transform">--}}
-{{--                                                فروش--}}
-{{--                                                            </a>--}}
-{{--                                                    </td>--}}
-{{--                                                    <td class="hidden md:flex xl:flex-row flex-col items-center justify-center oneLine w-36 sm:w-[20%] gap-1">--}}
-{{--                                                        <button id={{"button_buy_price_".$product->id}} onclick="open_trade_page({{ $product->id }},'buy')" class="bg-colorfourth1 disable_btn px-5 py-2 w-full text-white rounded-full flex max-w-fit cursor-pointer hover:scale-105  transition-transform" @if($market=="closed" || $product->buy_status=='0') disabled @endif  >--}}
-{{--                                                خرید--}}
-{{--                                                        </button>--}}
-{{--                                                        <button id={{"button_sell_price_".$product->id}} onclick="open_trade_page({{ $product->id }},'sell')" class="bg-colorthird1 px-5 py-2 w-full text-white rounded-full flex max-w-fit cursor-pointer hover:scale-105 transition-transform" @if($market=="closed" || $product->sell_status=='0') disabled @endif  >--}}
-{{--                                                فروش--}}
-{{--                                                        </button>--}}
-{{--                                                    </td>--}}
-{{--                                      </tr>--}}
 
                                   </tbody>
                                 </table>
@@ -99,14 +75,15 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{{url('/js/jquery.dataTables.min.js')}}"></script>
     <script>
+        let laravel_datatable;
         function open_trade_page(product_id,type)
         {
             console.log("here")
-            window.open('user-order/'+product_id+"/"+type);
+            window.open('customer-order/'+product_id+"/"+type);
         }
         $(document).ready(function() {
             // $('.select2').select2();
-            let laravel_datatable;
+
             filterList();
         });
 

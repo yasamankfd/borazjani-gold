@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\MessageNotification;
 use App\Http\Controllers\Controller;
 use App\Models\Orders;
 use App\Models\Setting;
@@ -16,7 +17,7 @@ class AdminLiveOrdersController extends Controller
     {
         $orders = Orders::orderBy('created_at', 'desc')->get();
         $market = Setting::where("s_key","market_status")->value('s_value');
-        return view('admin_live_orders' , compact('orders','market'));
+        return view('admin.admin_live_orders' , compact('orders','market'));
     }
 
     public function list_orders()
@@ -48,7 +49,7 @@ class AdminLiveOrdersController extends Controller
             })
             ->addColumn('status', function ($row) {
                 return '<td>' . '<label hidden="hidden">'.$row->status.'</label>
-                <p id="countdown_'.$row->id.'"> <span id="countdownValue_'.$row->id.'" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base">0</span> ثانیه </p>' . '</td>';
+                <p id="countdown_'.$row->id.'"> <span id="countdownValue_'.$row->id.'" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base" data-time="4" >0</span> ثانیه </p>' . '</td>';
             })
 
             ->addColumn('type', function ($row) {
@@ -56,13 +57,17 @@ class AdminLiveOrdersController extends Controller
                 $class = $row->type == "sell" ? "bg-colorthird1" : "bg-colorfourth1" ;
                 return '<td>' . '<span class=" '.$class.' px-4 py-2 w-full text-white rounded-full flex max-w-fit">'.$type.'</span>' . '</td>';
             })
+            ->addColumn('time', function ($row) {
+
+                return '<td>' . $row->created_at . '</td>';
+            })
             ->addColumn('action', function ($row) {
                 $route = 'admin-save-order';
                 $passedTime = Carbon::parse($row->created_at)->diffForHumans();
                 Log::debug($passedTime);
 //                $this.$this->checkOrderTime()
 
-                if ($this->checkOrderTime($row->created_at) && $row->status != 2 ) {
+                if ($this->checkOrderTime($row->created_at) ) {
                     return '<td>
                                 <form id="save_order_form" method="POST">
                                                    ' . csrf_field() . '
@@ -87,7 +92,7 @@ class AdminLiveOrdersController extends Controller
                 }
 
             })
-            ->rawColumns(['user','title','value','fee','type','totalPrice','action','status'])
+            ->rawColumns(['user','title','value','fee','type','totalPrice','action','status','time'])
             ->make(true);
     }
     public function checkOrderTime($created)
@@ -123,5 +128,15 @@ class AdminLiveOrdersController extends Controller
         ]);
         return response()->json(['code'=>200], 200);
 
+    }
+    public function marketChange($status)
+    {
+        Log::debug($status);
+
+        $market  =  Setting::where("s_key","market_status");
+        $market->update([
+            "s_value" => $status,
+        ]);
+        event(new MessageNotification("market_status"));
     }
 }

@@ -121,9 +121,9 @@
 <script src="{{url('/js/jquery.dataTables.min.js')}}"></script>
 
 <script>
+    let laravel_datatable;
     $(document).ready(function() {
         // $('.select2').select2();
-        let laravel_datatable;
         filterList();
     });
 
@@ -138,7 +138,7 @@
             autoWidth: false,
             "order": [[1, "desc"]],
             ajax:({
-                url : 'admin-dashboard-list-products',
+                url : 'list-market-change-products',
                 type : 'GET',
             }),
             columns: [
@@ -157,10 +157,10 @@
 
             ],
             "columnDefs": [
-                { className: "border-l pl-5 md:w-[30%] lg:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm", "targets": [ 0 ] },
-                { className: "oneLine text-lengh w-36 md:w-[25%] lg:md:w-[15%] text-center border-l font-normal tracking-tight text-sm text-colorfourth1 hidden md:block px-2", "targets": [ 1 ] },
-                { className: "oneLine text-lengh w-36 md:w-[25%] lg:md:w-[15%] text-center border-l font-normal tracking-tight text-sm text-colorthird1 hidden md:block px-2", "targets": [ 2 ] },
-                { className: "oneLine text-lengh w-36 md:w-[20%] text-center border-l font-light tracking-tight text-sm gap-1 justify-center hidden lg:flex", "targets": [ 3 ] },
+                { className: "border-l pl-5 md:w-[30%]  lg:w-[20%] text-center w-36 min-w-fit", "targets": [ 0 ] },
+                { className: "w-36 md:w-[25%] lg:md:w-[15%] text-center border-l min-w-fit hidden md:block", "targets": [ 1 ] },
+                { className: "oneLine text-lengh w-36 md:w-[25%] lg:md:w-[15%] text-center border-l font-normal tracking-tight text-sm text-colorfourth1 hidden md:block px-2", "targets": [ 2 ] },
+                { className: "oneLine text-lengh w-36 md:w-[25%] lg:md:w-[15%] text-center border-l font-normal tracking-tight text-sm text-colorthird1 hidden md:block px-2", "targets": [ 3 ] },
                 { className: "oneLine text-lengh w-36 md:w-[20%] text-center border-l font-light tracking-tight text-sm gap-1 justify-center hidden lg:flex", "targets": [ 4 ] },
                 { className: "oneLine w-36 md:w-[20%] lg:w-[10%] flex gap-1 justify-center", "targets": [ 5 ] },
 
@@ -193,7 +193,8 @@
     }
     function submit_form(product_id , type) {
         // Get form data
-        let formData = new FormData(document.getElementById('edit_product'));
+        let _url        = 'market-change-product-edit';
+        let formData    = new FormData($("#edit_product")[0]);
         if (type === 2)
         {
             product_id = document.getElementById("modal_product_id").value;
@@ -225,19 +226,27 @@
         formData.append('sell_price', sell_price);
         formData.append('product_id', product_id);
 
-        // Make an Ajax request using Fetch API
-        fetch('product-edit', {
-            method: 'POST',
-            body: formData,
-        })
-            .then(response => response.json())
-            .then(data => {
-                // Handle the response data
-                console.log(JSON.stringify(data));
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        $.ajax({
+            type: 'POST',
+            url: _url,
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.code === 200) {
+                    if (response.id != null) {
+                        console.log("warning");
+                    } else {
+                        console.log("success");
+                    }
+                    laravel_datatable.ajax.reload(null, false);
+                    close_modal();
+                }
+            },
+            error: function (response) {
+                handleErrorResponse(response);
+            }
+        });
     }
 
     function change_market_status()
@@ -253,7 +262,7 @@
             status = "closed";
             // Add your custom logic for when the switch is OFF
         }
-        let _url = 'market-status/' + status;
+        let _url = 'market-change-market-status/' + status;
 
         $.ajax({
             url: _url,
@@ -265,7 +274,7 @@
     }
 
     function open_edit_modal(product_id){
-        let _url            = 'find-product/' + product_id;
+        let _url = 'market-change-find-product/' + product_id;
         $.ajax({
             url: _url,
             type: "GET",
@@ -298,7 +307,7 @@
         });
     }
 
-    function closeModal() {
+    function close_modal() {
 
         $("#edit_product_modal").addClass("hidden");
     }

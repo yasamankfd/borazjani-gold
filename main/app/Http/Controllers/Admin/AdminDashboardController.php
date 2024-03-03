@@ -18,7 +18,7 @@ class AdminDashboardController extends Controller
         $market  =  Setting::where("s_key","market_status")->value('s_value');
         $orders = Orders::all();
 
-        return view('dashboard_admin' , compact('products','market','orders'));
+        return view('admin.dashboard_admin' , compact('products','market','orders'));
     }
     public function list_dashboard_products()
     {
@@ -82,14 +82,7 @@ class AdminDashboardController extends Controller
             ->rawColumns(['title','buy_price','sell_price','buy_status','sell_status','action'])
             ->make(true);
     }
-    public function showMarketChange()
-    {
-        $products = Products::all();
-        $market  =  Setting::where("s_key","market_status")->value('s_value');
-        $orders = Orders::all();
 
-        return view('admin_market_change' , compact('products','market','orders'));
-    }
     public function singleProductChange(Request $request)
     {
         Log::debug($request);
@@ -142,26 +135,5 @@ class AdminDashboardController extends Controller
         //Log::debug($user);
         return response()->json($product);
     }
-//
-//    public function update(Request $request)
-//    {
-//        Log::debug("change price for all");
-//        $products = Products::all();
-//        foreach ($products as $p)
-//        {
-//            $buy_name = $request->input('buy_price_'.$p->id);
-//            $sell_name = $request->input('sell_price_'.$p->id);
-//
-//            $buy_price = isset($buy_name) ? $buy_name : $p->buy_price;
-//            $sell_price = isset($sell_name) ? $sell_name : $p->sell_price;
-//
-//            $p->update([
-//                "buy_price" => $buy_price,
-//                "sell_price" => $sell_price,
-//            ]);
-//        }
-//
-//        event(new MessageNotification("market_price"));
-//        return redirect(route("index"));
-//    }
+
 }

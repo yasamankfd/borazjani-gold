@@ -1,25 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Customer;
 
+use App\Http\Controllers\Controller;
 use App\Models\Orders;
 use App\Models\Products;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use function Psy\debug;
 
-class OrderController extends Controller
+class CustomerSubmitOrder extends Controller
 {
     public function index($product_id,$type)
     {
         $products = Products::all();
         $product = Products::find($product_id);
-        //("id",$product_id)->value("title","buy_price","sell_price","status","unit");
-//        Log::debug($product);
         $market = Setting::where("s_key","market_status")->value('s_value');
         $user_id = 1;
-        return view("order",compact('market','products','product','type','user_id'));
+        return view("customer_order",compact('market','products','product','type','user_id'));
     }
     public function store(Request $request)
     {
@@ -34,8 +31,7 @@ class OrderController extends Controller
             "product_id" => $request->product_id,
         ]);
         $user_id = $request->user_id;
-        return redirect()->route('user-liveorders', $user_id);
+        return redirect()->route('customer-liveorders');
 
     }
-
 }

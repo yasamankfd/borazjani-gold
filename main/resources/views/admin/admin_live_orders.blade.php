@@ -18,13 +18,11 @@
                               <table id="products_datatable" x-data="{ detailrow:false }" class="space-y-3 block overflow-x-auto pb-5">
                                   <thead class="w-full flex">
                                       <tr class="flex justify-between items-center w-fit xl:w-full bg-colorprimary text-white font-normal px-1 md:px-5 py-3 rounded-lg hover:shadow-gray-200/50 hover:shadow-lg text-xs lg:text-sm">
-                                          <td class="border-l xl:w-[5%] text-center w-36 min-w-fit">ردیف</td>
-
-                                          <td class="border-l xl:w-[20%] text-center w-36 min-w-fit">کاربر</td>
-
-                                        <td class="border-l xl:w-[15%] text-center w-36 min-w-fit">نام محصول</td>
+                                          <td class="border-l xl:w-[15%] text-center w-36 min-w-fit">کاربر</td>
+                                          <td class="border-l xl:w-[15%] text-center w-36 min-w-fit">نام محصول</td>
                                           <td class="w-36 xl:w-[10%] text-center border-l min-w-fit">
                                             <span>مقدار</span>
+                                          </td>
                                           <td class="w-36 xl:w-[10%] text-center border-l min-w-fit">
                                             <span>فی</span>
                                             <span class="text-gray-400 font-extralight">(ریال)</span>
@@ -36,6 +34,9 @@
                                           <td class="w-36 xl:w-[10%] text-center border-r">
                                             <span>وضعیت</span>
                                           </td>
+                                          <td class="w-36 xl:w-[10%] text-center border-r">
+                                            <span>ساعت</span>
+                                          </td>
                                           <td class="flex w-36 xl:w-[10%]  justify-center items-center gap-2 border-r pr-1">
                                             <span class="w-full text-center">معامله</span>
                                         </td>
@@ -45,43 +46,7 @@
                                       </tr>
                                   </thead>
                                   <tbody x-data="{ detailrow:false }" class="space-y-1 w-full flex flex-col ">
-{{--                                  @foreach($orders as $order)--}}
-{{--                                      <tr class="flex flex-row justify-between items-center bg-slate-100 w-fit xl:w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative text-colorprimary/70">--}}
-{{--                                        <td class="border-l xl:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm">{{ $order->user->name }} {{ $order->user->lastname }}</td>--}}
-{{--                                        <td class="border-l xl:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm flex flex-col">--}}
-{{--                                            <span>{{ $order->product->title }}</span>--}}
-{{--                                            <span class="font-light">2321</span>--}}
-{{--                                        </td>--}}
-{{--                                          <td class="oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-normal tracking-tight text-base">--}}
-{{--                                            <span>{{ $order->value }}</span>--}}
-{{--                                            <span class="text-gray-400 font-extralight">@if($order->unit == "gram") گرم @else تعداد @endif</span>--}}
-{{--                                          </td>--}}
-{{--                                          <td class="oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-normal tracking-tight text-sm">{{ $order->fee }}</td>--}}
-{{--                                          <td class="oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-normal tracking-tight text-sm">{{ $order->total_price }}</td>--}}
-{{--                                          <td class="oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-light tracking-tight text-sm flex gap-1 justify-center">--}}
-{{--                                            <label hidden="hidden">{{ $order->status }}</label>--}}
-{{--                                                <p id="countdown_{{$order->id}}"> <span id="countdownValue_{{$order->id}}" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base">0</span> ثانیه </p>--}}
-{{--                                          </td>--}}
-{{--                                          <td class="oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-light tracking-tight text-sm flex gap-1 justify-center">--}}
-{{--                                            <span class=" @if($order->type == "sell") bg-colorthird1 @else bg-colorfourth1 @endif  px-4 py-2 w-full text-white rounded-full flex max-w-fit">--}}
-{{--                                                @if($order->type == "sell") فروش @else خرید @endif--}}
-{{--                                              </span>--}}
-{{--                                          </td>--}}
 
-{{--                                          <td class="oneLine w-36 xl:w-[10%] flex gap-1 justify-center">--}}
-{{--                                              <form method="POST" action="{{ route("admin-save-order") }}">--}}
-{{--                                                  @csrf--}}
-{{--                                                  <input id="order_id" name="order_id" value="{{ $order->id }}" class="hidden">--}}
-{{--                                                  <button type="submit"  class="bg-colorprimary px-5 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base cursor-pointer">--}}
-{{--                                                تایید--}}
-{{--                                                  </button>--}}
-
-{{--                                              </form>--}}
-
-{{--                                          </td>--}}
-{{--                                      </tr>--}}
-
-{{--                                  @endforeach--}}
                                   </tbody>
                               </table>
                         </div>
@@ -164,6 +129,7 @@
                     {data: 'totalPrice', name: 'totalPrice', orderable: false, searchable: false},
                     {data: 'status', name: 'status', orderable: true, searchable: false},
                     {data: 'type', name: 'type', orderable: true, searchable: false},
+                    {data: 'time', name: 'time', orderable: true, searchable: false},
                     {data: 'action', name: 'action', orderable: true, searchable: false},
 
                 ],
@@ -179,7 +145,8 @@
                     { className: "oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-normal tracking-tight text-sm", "targets": [ 4 ] },
                     { className: "oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-light tracking-tight text-sm flex gap-1 justify-center", "targets": [ 5 ] },
                     { className: "oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-light tracking-tight text-sm flex gap-1 justify-center", "targets": [ 6 ] },
-                    { className: "oneLine w-36 xl:w-[10%] flex gap-1 justify-center", "targets": [ 7 ] },
+                    { className: "oneLine text-lengh w-36 xl:w-[10%] text-center border-l font-light tracking-tight text-sm flex gap-1 justify-center", "targets": [ 7 ] },
+                    { className: "oneLine w-36 xl:w-[10%] flex gap-1 justify-center", "targets": [ 8 ] },
 
                 ],
                 language: {
@@ -269,14 +236,29 @@
             });
         }
 
-        function showAlert(text, type) {
-            $('#alert_content_' + type).html(text);
-            $('#alert-' + type).removeClass("hidden");
-            setTimeout(function () {
-                $('#alert-' + type).addClass("hidden");
-            }, 3000);
-        }
+        function change_market_status()
+        {
+            console.log('blade')
+            let status = "";
+            var checkbox = document.getElementById("market_status");
+            // Perform actions based on the checkbox state
+            if (checkbox.checked) {
+                status = "open";
+                // Add your custom logic for when the switch is ON
+            } else {
+                status = "closed";
+                // Add your custom logic for when the switch is OFF
+            }
+            let _url = 'admin-liveorder-market-status/' + status;
 
+            $.ajax({
+                url: _url,
+                type: "GET",
+                success: function (response) {
+                    console.log(response)
+                }
+            });
+        }
         function live_order_notification()
         {
 

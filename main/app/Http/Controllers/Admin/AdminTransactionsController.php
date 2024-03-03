@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\MessageNotification;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Models\Trades;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class AdminTransactionsController extends Controller
 {
@@ -13,7 +15,7 @@ class AdminTransactionsController extends Controller
     {
         $market = Setting::where("s_key","market_status")->value('s_value');
         $transactions = Trades::orderBy('created_at', 'desc')->get();
-        return view("admin_transaction", compact("market", "transactions"));
+        return view("admin.admin_transaction", compact("market", "transactions"));
     }
     public function list_transactions_buy()
     {
@@ -106,6 +108,17 @@ class AdminTransactionsController extends Controller
             })
             ->rawColumns(['user','title','value','fee','type','totalPrice','time','number'])
             ->make(true);
+    }
+
+    public function marketChange($status)
+    {
+        Log::debug($status);
+
+        $market  =  Setting::where("s_key","market_status");
+        $market->update([
+            "s_value" => $status,
+        ]);
+        event(new MessageNotification("market_status"));
     }
 
     public function getCreatedAtAttribute($date) {

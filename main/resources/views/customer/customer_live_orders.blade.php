@@ -1,3 +1,4 @@
+@include("includes.header")
 @extends('layout.customer')
 @section('page_title')
     سفارشات
@@ -66,32 +67,7 @@
                                       </tr>
                                   </thead>
                                   <tbody x-data="{ detailrow:false }" class="space-y-1 w-full flex flex-col ">
-{{--                                  @foreach($orders  as $item)--}}
-{{--                                      <tr class="flex flex-row justify-between items-center bg-slate-100 w-fit md:w-full rounded-lg text-xs lg:text-sm font-light px-1 md:px-5 py-3 relative text-colorprimary/70">--}}
-{{--                                          <td class="border-l pl-5  md:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm">طلا آبشده</td>--}}
-{{--                                          <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal tracking-tight text-base">--}}
-{{--                                            <span>{{ $item->value }}</span>--}}
-{{--                                            <span class="text-gray-400 font-extralight">گرم</span>--}}
-{{--                                          </td>--}}
-{{--                                          <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->fee }}</td>--}}
-{{--                                          <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->total_price }}</td>--}}
-{{--                                          <td class="oneLine text-lengh w-36 md:w-[15%] text-center border-l font-light tracking-tight text-sm flex gap-1 justify-center">--}}
-{{--                                            <span class=" @if($item->type == "sell") bg-colorthird1 @else bg-colorfourth1 @endif  px-4 py-2 w-full text-white rounded-full flex max-w-fit">--}}
-{{--                                                @if($item->type == "sell")--}}
-{{--                                                    فروش--}}
-{{--                                                @else--}}
-{{--                                                    خرید--}}
-{{--                                                @endif--}}
-{{--                                              </span>--}}
-{{--                                          </td>--}}
-{{--                                          <td class="oneLine text-lengh w-36 md:w-[20%] text-center border-l font-normal tracking-tight text-sm">{{ $item->created_at->format('H:i:s') }}</td>--}}
-{{--                                          <td class="oneLine w-36 md:w-[10%] flex gap-1 justify-center">--}}
-{{--                                              <label class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base hidden " >{{ $item->status }}</label>--}}
-{{--                                              <p id="countdown_{{$item->id}}"> <span id="countdownValue_{{$item->id}}" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base"></span>  </p>--}}
 
-{{--                                          </td>--}}
-{{--                                      </tr>--}}
-{{--                                  @endforeach--}}
                                   </tbody>
                               </table>
                         </div>
@@ -158,7 +134,7 @@
             autoWidth: false,
             "order": [[1, "desc"]],
             ajax:({
-                url : 'user-list-orders',
+                url : 'customer-list-orders',
                 type : 'GET',
             }),
             columns: [
@@ -173,6 +149,7 @@
                 {data: 'fee', name: 'fee', orderable: true, searchable: false},
                 {data: 'totalPrice', name: 'totalPrice', orderable: false, searchable: false},
                 {data: 'type', name: 'type', orderable: true, searchable: false},
+                {data: 'time', name: 'time', orderable: true, searchable: false},
                 {data: 'status', name: 'status', orderable: true, searchable: false},
             ],
             "createdRow": function (row, data, dataIndex) {

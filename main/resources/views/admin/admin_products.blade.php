@@ -309,7 +309,7 @@
         } else {
             status = "closed";
         }
-        let _url = 'market-status/' + status;
+        let _url = 'admin-products-market-status/' + status;
 
         $.ajax({
             url: _url,

@@ -9,7 +9,7 @@
     </span>
     <ul x-data="{dashboard:true, orders:false,transaction:false, profile:false}" class="mt-5 space-y-3 relative font-light">
         <li :class="dashboard ? 'bg-colorsecondry1' : 'bg-transparent'" class="pr-5 relative group">
-            <a href="{{ route('dashboard') }}" @click="dashboard=true, orders=false,transaction=false, profile=false" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
+            <a href="{{ route('customer-dashboard') }}" @click="dashboard=true, orders=false,transaction=false, profile=false" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
                 <span class="icon relative block text-center">
                     <img src="{{ url("/img/home-icon.svg")}}" alt="" class="">
 
@@ -18,7 +18,7 @@
             </a>
         </li>
         <li :class="orders ? 'bg-colorsecondry1' : 'bg-transparent'" class="pr-5 relative group">
-            <a href="{{ route('user-liveorders' , 1) }}" @click="dashboard=false,orders=true,transaction=false,profile=false" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
+            <a href="{{ route('customer-liveorders') }}" @click="dashboard=false,orders=true,transaction=false,profile=false" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
                 <span class="icon relative block text-center">
                     <img src="{{ url("/img/orders-icon.svg")}}" alt="" class="">
 
@@ -27,7 +27,7 @@
             </a>
         </li>
         <li :class="transaction ? 'bg-colorsecondry1' : 'bg-transparent'" class="pr-5 relative group">
-            <a href="{{ route('user-transactions' , 1) }}" @click="dashboard=false, orders=false,transaction=true, profile=false" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
+            <a href="{{ route('customer-transactions') }}" @click="dashboard=false, orders=false,transaction=true, profile=false" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
                 <span class="icon relative block text-center">
                     <img src="{{ url("/img/transaction-icon.svg")}}" alt="" class="">
                 </span>
@@ -35,7 +35,7 @@
             </a>
         </li>
         <li :class="profile ? 'bg-colorsecondry1' : 'bg-transparent'" class="pr-5 relative group">
-            <a href="{{ route("user-profile" , 1) }}" @click="dashboard=false, orders=false,transaction=false, profile=true" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
+            <a href="{{ route("customer-profile") }}" @click="dashboard=false, orders=false,transaction=false, profile=true" class="cursor-pointer flex justify-start gap-7 items-center relative w-full p-2 rounded-r-full">
                 <span class="icon relative block text-center">
                     <img src="{{ url("/img/user-icon.svg")}}" alt="" class="">
                 </span>

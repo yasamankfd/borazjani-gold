@@ -168,10 +168,10 @@
 
                 ],
                 "columnDefs": [
-                    { className: "border-l pl-5 md:w-[30%] lg:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm", "targets": [ 0 ] },
-                    { className: "oneLine text-lengh w-36 md:w-[25%] lg:md:w-[15%] text-center border-l font-normal tracking-tight text-sm text-colorfourth1 hidden md:block px-2", "targets": [ 1 ] },
-                    { className: "oneLine text-lengh w-36 md:w-[25%] lg:md:w-[15%] text-center border-l font-normal tracking-tight text-sm text-colorthird1 hidden md:block px-2", "targets": [ 2 ] },
-                    { className: "oneLine text-lengh w-36 md:w-[20%] text-center border-l font-light tracking-tight text-sm gap-1 justify-center hidden lg:flex", "targets": [ 3 ] },
+                    { className: "border-l pl-5 md:w-[30%]  lg:w-[20%] text-center w-36 min-w-fit", "targets": [ 0 ] },
+                    { className: "w-36 md:w-[25%] lg:md:w-[15%] text-center border-l min-w-fit hidden md:block", "targets": [ 1 ] },
+                    { className: "oneLine text-lengh w-36 md:w-[25%] lg:md:w-[15%] text-center border-l font-normal tracking-tight text-sm text-colorfourth1 hidden md:block px-2", "targets": [ 2 ] },
+                    { className: "oneLine text-lengh w-36 md:w-[25%] lg:md:w-[15%] text-center border-l font-normal tracking-tight text-sm text-colorthird1 hidden md:block px-2", "targets": [ 3 ] },
                     { className: "oneLine text-lengh w-36 md:w-[20%] text-center border-l font-light tracking-tight text-sm gap-1 justify-center hidden lg:flex", "targets": [ 4 ] },
                     { className: "oneLine w-36 md:w-[20%] lg:w-[10%] flex gap-1 justify-center", "targets": [ 5 ] },
 

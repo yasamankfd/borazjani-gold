@@ -41,7 +41,7 @@ const app = new Vue({
             console.log(e.type)
                 if(e.type === "market_price"){
 
-                    if(window.location.href.includes('order') || window.location.href.includes('user-order'))
+                    if(window.location.href.includes('user-order'))
                     {
                         var product_id = document.getElementById("product_id").value;
                         var p = e.products.original.find(p => p.id.toString() === product_id);
@@ -56,133 +56,96 @@ const app = new Vue({
 
                         fee_sell.textContent = p.sell_price;
                         fee_buy.textContent = p.buy_price;
-                    }else{
-                        e.products.original.forEach(function(product){
-                            if(window.location.href.includes('dashboard')){
-                                console.log('buy_price_'+product.id)
-                                console.log('sell_price_'+product.id)
-                                document.getElementById('buy_price_'+product.id).textContent = product.buy_price;
-                                document.getElementById('sell_price_'+product.id).textContent = product.sell_price;
-
-
-                                let button_buy_status = document.getElementById("button_buy_price_"+product.id);
-                                let button_sell_status = document.getElementById("button_sell_price_"+product.id);
-
-                                if(e.market_status.original === "open")
-                                {
-                                    button_buy_status.disabled = product.buy_status === 1 ? false : true;
-                                    button_sell_status.disabled = product.sell_status === 1 ? false : true;
-                                }else{
-                                    button_buy_status.disabled = true;
-                                    button_sell_status.disabled = true;
-                                }
-
-                            }else if(window.location.href.includes('customer')){
-                                document.getElementById('buy_price_'+product.id).innerText = product.buy_price;
-                                document.getElementById('sell_price_'+product.id).innerText = product.sell_price;
-
-                                let button_buy_status = document.getElementById("button_buy_price_"+product.id);
-                                let button_sell_status = document.getElementById("button_sell_price_"+product.id);
-
-                                if(e.market_status.original === "open")
-                                {
-                                    button_buy_status.disabled = product.buy_status === 1 ? false : true;
-                                    button_sell_status.disabled = product.sell_status === 1 ? false : true;
-                                }else{
-                                    button_buy_status.disabled = true;
-                                    button_sell_status.disabled = true;
-                                }
-                            }
-                        });
+                    }else if (window.location.href.includes('customer-dashboard')){
+                        var dataTable = $('#products_datatable').DataTable();
+                        dataTable.draw();
                     }
+// event on market status change
                 }else {
-                    if(window.location.href.includes('dashboard'))
+                    console.log("here");
+                    var market_status_span = document.getElementById("market_status_span");
+                    var market_status_span_color = document.getElementById('market_status_span_color');
+
+                    let market_status = e.market_status.original !== "open";
+
+                    if (!market_status) {
+                        market_status_span_color.classList.remove("bg-colorthird1");
+                        market_status_span_color.classList.add("bg-colorfourth1");
+                        market_status_span.innerText = "باز";
+                    } else {
+                        market_status_span_color.classList.remove("bg-colorfourth1");
+                        market_status_span_color.classList.add("bg-colorthird1");
+                        market_status_span.innerText = "بسته";
+                    }
+                    // if (window.location.href.includes('customer-dashboard'))
                     {
-                        console.log("reached")
-                        var market_status_span_color = document.getElementById('market_status_span_color');
-                        var market_status_span = document.getElementById('market_status_span');
-                        let market_status = e.market_status.original !== "open" ;
+                        if (window.location.href.includes('customer-dashboard')) {
+                            var dataTable = $('#products_datatable').DataTable();
+                            dataTable.draw();
+                            // var market_status_span_color = document.getElementById('market_status_span_color');
+                            // var market_status_span = document.getElementById('market_status_span');
+                            let market_status = e.market_status.original !== "open";
 
 
-                        if(!market_status)
-                        {
-                            market_status_span_color.classList.remove("bg-colorthird1");
-                            market_status_span_color.classList.add("bg-colorfourth1");
-                            market_status_span.innerText = "باز";
-                        }else{
-                            market_status_span_color.classList.remove("bg-colorfourth1");
-                            market_status_span_color.classList.add("bg-colorthird1");
-                            market_status_span.innerText = "بسته";
+                            // if (!market_status) {
+                            //     market_status_span_color.classList.remove("bg-colorthird1");
+                            //     market_status_span_color.classList.add("bg-colorfourth1");
+                            //     market_status_span.innerText = "باز";
+                            // } else {
+                            //     market_status_span_color.classList.remove("bg-colorfourth1");
+                            //     market_status_span_color.classList.add("bg-colorthird1");
+                            //     market_status_span.innerText = "بسته";
+                            // }
+
+                        } else if (window.location.href.includes('user-order')) {
+                            console.log("market change listener")
+
+                            var change_to_buy_button = document.getElementById("change_to_buy");
+                            var change_to_sell_button = document.getElementById("change_to_sell");
+                            // var market_status_span = document.getElementById("market_status_span");
+                            // var market_status_span_color = document.getElementById('market_status_span_color');
+                            var submit_buy_order = document.getElementById("submit_buy_order");
+                            var submit_sell_order = document.getElementById("submit_sell_order");
+
+                            let market_status = e.market_status.original === "open";
+
+                            submit_buy_order.disabled = !market_status ? true : false;
+                            submit_sell_order.disabled = !market_status ? true : false;
+
+                            change_to_buy_button.disabled = market_status;
+                            change_to_sell_button.disabled = market_status;
+
+                            // if (market_status) {
+                            //     market_status_span_color.classList.remove("bg-colorthird1");
+                            //     market_status_span_color.classList.add("bg-colorfourth1");
+                            //     market_status_span.innerText = "باز";
+                            // } else {
+                            //     market_status_span_color.classList.remove("bg-colorfourth1");
+                            //     market_status_span_color.classList.add("bg-colorthird1");
+                            //     market_status_span.innerText = "بسته";
+                            // }
+
                         }
-                        console.log(e.products)
-                        e.products.original.forEach(function(product){
-                            let button_buy_status = document.getElementById("button_buy_price_"+product.id);
-                            let button_sell_status = document.getElementById("button_sell_price_"+product.id);
-
-                            if(e.market_status.original === "open")
-                            {
-                                button_buy_status.disabled = product.buy_status === 1 ? false : true;
-                                button_sell_status.disabled = product.sell_status === 1 ? false : true;
-                            }else{
-                                button_buy_status.disabled = true;
-                                button_sell_status.disabled = true;
-                            }
-                        });
-
-                    }else if(window.location.href.includes('user-order'))
-                    {
-                        console.log("market change listener")
-
-
-                        var change_to_buy_button = document.getElementById("change_to_buy");
-                        var change_to_sell_button = document.getElementById("change_to_sell");
-                        var market_status_span = document.getElementById("market_status_span");
-                        var market_status_span_color = document.getElementById('market_status_span_color');
-                        var submit_buy_order = document.getElementById("submit_buy_order");
-                        var submit_sell_order = document.getElementById("submit_sell_order");
-
-
-                        let market_status = e.market_status.original === "open";
-
-                        submit_buy_order.disabled = !market_status ? true : false;
-                        submit_sell_order.disabled = !market_status ? true : false;
-
-                        change_to_buy_button.disabled = market_status;
-                        change_to_sell_button.disabled = market_status;
-
-                        if(market_status)
-                        {
-                            market_status_span_color.classList.remove("bg-colorthird1");
-                            market_status_span_color.classList.add("bg-colorfourth1");
-                            market_status_span.innerText = "باز";
-                        }else{
-                            market_status_span_color.classList.remove("bg-colorfourth1");
-                            market_status_span_color.classList.add("bg-colorthird1");
-                            market_status_span.innerText = "بسته";
-                        }
-
-                    }else if(window.location.href.includes('user-liveorders') || window.location.href.includes('user-transactions'))
-                    {
-                        console.log("here");
-                        var market_status_span = document.getElementById("market_status_span");
-                        var market_status_span_color = document.getElementById('market_status_span_color');
-
-                        let market_status = e.market_status.original !== "open";
-
-
-                        if(!market_status)
-                        {
-                            market_status_span_color.classList.remove("bg-colorthird1");
-                            market_status_span_color.classList.add("bg-colorfourth1");
-                            market_status_span.innerText = "باز";
-                        }else{
-                            market_status_span_color.classList.remove("bg-colorfourth1");
-                            market_status_span_color.classList.add("bg-colorthird1");
-                            market_status_span.innerText = "بسته";
-                        }
+                        //     if (window.location.href.includes('user-liveorders') || window.location.href.includes('user-transactions')) {
+                        //     console.log("here");
+                        //     var market_status_span = document.getElementById("market_status_span");
+                        //     var market_status_span_color = document.getElementById('market_status_span_color');
+                        //
+                        //     let market_status = e.market_status.original !== "open";
+                        //
+                        //     if (!market_status) {
+                        //         market_status_span_color.classList.remove("bg-colorthird1");
+                        //         market_status_span_color.classList.add("bg-colorfourth1");
+                        //         market_status_span.innerText = "باز";
+                        //     } else {
+                        //         market_status_span_color.classList.remove("bg-colorfourth1");
+                        //         market_status_span_color.classList.add("bg-colorthird1");
+                        //         market_status_span.innerText = "بسته";
+                        //     }
+                        // }
                     }
                 }
             });
-    }
+        }
 });
 

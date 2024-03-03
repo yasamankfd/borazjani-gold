@@ -194,9 +194,9 @@
             $check_box = document.getElementById(id);
             $check_box.value = $check_box.checked ? 1 : 0 ;
         }
+        let laravel_datatable;
         $(document).ready(function() {
             // $('.select2').select2();
-            let laravel_datatable;
             filterList()
         });
         function filterList() {
@@ -288,8 +288,8 @@
                             $('#modal_customer_serial').val(response.nid_serial);
                             $('#modal_customer_certificate').attr('src', response.certificate_img);
                             $('#modal_customer_national_card').attr('src', response.national_card_img);
-                            $('#modal_customer_certificate_img').attr('src', response.certificate_img);
-                            $('#modal_customer_national_card_img').attr('src', response.national_card_img);
+                            $('#modal_customer_certificate_img').attr('src', response.licence_img);
+                            $('#modal_customer_national_card_img').attr('src', response.card_img);
                             $('#modal_customer_id').val(customer_id)
 
                             user_status = response.status;
@@ -306,7 +306,8 @@
         function create_user()
         {
             console.log("heerererre");
-            let formData = new FormData(document.getElementById('create_product_form'));
+            let _url        = 'product-create';
+            let formData    = new FormData($("#create_product_form")[0]);
 
             var status_checkbox = document.getElementById("modal_product_status");
             var title = document.getElementById("modal_product_title").value;
@@ -324,19 +325,27 @@
             formData.append('sell_price', sell_price);
             formData.append('id', modal_product_id);
 
-            // Make an Ajax request using Fetch API
-            fetch('product-create', {
-                method: 'POST',
-                body: formData,
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // Handle the response data
-                    console.log(JSON.stringify(data));
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            $.ajax({
+                type: 'POST',
+                url: _url,
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.code === 200) {
+                        if (response.id != null) {
+                            console.log("warning");
+                        } else {
+                            console.log("success");
+                        }
+                        laravel_datatable.ajax.reload(null, false);
+                        close_modal();
+                    }
+                },
+                error: function (response) {
+                    handleErrorResponse(response);
+                }
+            });
         }
 
 
@@ -349,7 +358,7 @@
             } else {
                 status = "closed";
             }
-            let _url = 'market-status/' + status;
+            let _url = 'admin-customers-market-status/' + status;
 
             $.ajax({
                 url: _url,
@@ -364,6 +373,7 @@
             $("#edit_user_modal").addClass("hidden");
             reset_form("customer_form");
         }
+
         function reset_form(id) {
             $('#'+id)[0].reset();
         }

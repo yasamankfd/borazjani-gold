@@ -1,5 +1,5 @@
-@extends("layout.admin")
 @include("includes.header")
+@extends("layout.admin")
 @section("title")
     معاملات ثبت شده
 @endsection
@@ -273,6 +273,26 @@
                 }
             });
 
+        }
+
+        function change_market_status() {
+            console.log('blade')
+            let status = "";
+            var checkbox = document.getElementById("market_status");
+            if (checkbox.checked) {
+                status = "open";
+            } else {
+                status = "closed";
+            }
+            let _url = 'admin-transaction-market-status/' + status;
+
+            $.ajax({
+                url: _url,
+                type: "GET",
+                success: function (response) {
+                    console.log(response)
+                }
+            });
         }
     </script>
 
