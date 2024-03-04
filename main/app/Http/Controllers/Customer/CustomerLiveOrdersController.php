@@ -55,7 +55,7 @@ class CustomerLiveOrdersController extends Controller
                 if($this->checkOrderTime($row->created_at) )
                 {
                     return '<td>' . '<label hidden="hidden">'.$row->status.'</label>
-                <p id="countdown_'.$row->id.'"> <span id="countdownValue_'.$row->id.'" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base">0</span> ثانیه </p>' . '</td>';
+                 <span id="countdownValue_'.$row->id.'" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base count_down" status_="'.$row->status.'" data-time="'.$row->created_at.'" ></span></td>';
                 } else {
                     if ($row->status == 2) {
                         return '<td>

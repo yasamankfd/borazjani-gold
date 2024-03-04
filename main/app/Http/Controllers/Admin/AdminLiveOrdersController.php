@@ -54,7 +54,7 @@ class AdminLiveOrdersController extends Controller
             })
             ->addColumn('status', function ($row) {
                 return '<td>' . '<label hidden="hidden">'.$row->status.'</label>
-                <p id="countdown_'.$row->id.'"> <span id="countdownValue_'.$row->id.'" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base" data-time="4" >0</span> ثانیه </p>' . '</td>';
+                <span id="countdownValue_'.$row->id.'" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base count_down" status_="'.$row->status.'" data-time="'.$row->created_at.'" ></span> ' . '</td>';
             })
 
             ->addColumn('type', function ($row) {
@@ -78,7 +78,7 @@ class AdminLiveOrdersController extends Controller
                                                    ' . csrf_field() . '
                                                   <input id="order_id" name="order_id" value="'.$row->id.'" class="hidden">
                                 </form>
-                                <button onclick="open_create_modal('.$row->id.')" class="bg-colorprimary px-5 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base cursor-pointer">
+                                <button id="countdownValue_'.$row->id.'_button" onclick="open_create_modal('.$row->id.')" class="bg-colorprimary px-5 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base cursor-pointer">
                                                 تایید
                                 </button>
 

@@ -86,11 +86,15 @@
     <script>
 
 
+        let laravel_datatable;
 
         $(document).ready(function() {
-            let laravel_datatable;
             filterList();
+            $('#products_datatable').on('draw.dt', function() {
+                call_count_down();
+            });
         });
+
 
         function open_create_modal(id)
         {
@@ -134,10 +138,6 @@
                     {data: 'action', name: 'action', orderable: true, searchable: false},
 
                 ],
-                "createdRow": function (row, data, dataIndex) {
-                    // Call your JavaScript function with arguments here
-                    yourJavaScriptFunction(row, data, dataIndex);
-                },
                 "columnDefs": [
                     { className: "border-l xl:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm", "targets": [ 0 ] },
                     { className: "border-l xl:w-[15%] text-center w-36 min-w-fit font-normal tracking-tight text-sm flex flex-col", "targets": [ 1 ] },
@@ -173,40 +173,41 @@
                         "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
                     }
                 }
-            });
-
+            }
+            );
         }
 
-        function startCountdown(time , id ) {
-            now = new Date().getTime();
-            created = new Date(time).getTime();
-            let seconds = Number(((created + 120000) - now)/1000).toFixed(0) ;
 
-            var countdownValue = $('#countdownValue_' + id);
-            var countdown = $('#countdown_' + id);
-            if(seconds < 0)
-            {
+        function startCountdown(time, id,status) {
+            let now = new Date().getTime();
+            let created = new Date(time).getTime();
+            let seconds = Math.max(0, Math.floor((created + 120000 - now) / 1000));
 
-                countdownValue.text('');
-                countdown.text('درخواست مجدد');
-            }
-            if(seconds >= 0 ){
-                console.log(seconds)
+            console.log(id+" "+status)
+            var countdownValue = document.getElementById(id);
 
-                var interval = setInterval(function () {
-                    countdownValue.text(seconds);
+
+                console.log(id)
+                function updateCountdown() {
+                    countdownValue.textContent= seconds.toString();
                     seconds--;
 
                     if (seconds < 0) {
                         clearInterval(interval);
-                        countdownValue.text('0');
+                        countdownValue.textContent = '0';
                     }
-                }, 1000);
-            }
-        }
+                }
 
-        function yourJavaScriptFunction(row, data, dataIndex) {
-            startCountdown(data.created_at, data.id);
+                if (seconds >= 0 && status !== 2) {
+                    console.log("success");
+                    updateCountdown(); // Initial update
+                    var interval = setInterval(updateCountdown, 1000);
+                } else {
+                    countdownValue.textContent='';
+                    document.getElementById(id+"_button").disabled = true;
+                    // countdown.text('درخواست مجدد');
+                }
+
         }
 
         function submit_order() {
@@ -228,11 +229,15 @@
                             console.log('success');
                         }
                         laravel_datatable.ajax.reload(null, false);
+                        id = document.getElementById("order_id").value;
+                        var btn = document.getElementById("countdownValue_"+ id +"_button").disabled = true;
+                        var spn = document.getElementById("countdownValue_"+ id).textContent = "0";
+                        console.log(btn);
                         close_modal();
                     }
                 },
                 error: function (response) {
-                    handleErrorResponse(response);
+                    console.log(response);
                 }
             });
         }
@@ -261,6 +266,25 @@
             });
         }
 
+        function call_count_down()
+        {
+            // Find all elements with the class 'your-class'
+            var elements = document.getElementsByClassName('count_down');
+
+// Use for loop to iterate over the HTMLCollection
+            console.log(elements)
+            for (var i = 0; i < elements.length; i++) {
+                console.log("here");
+
+                var element = elements[i];
+                var time = element.getAttribute("data-time");
+                var id = element.getAttribute("id");
+                var status = element.getAttribute("status_");
+                startCountdown(time, id,status);
+            }
+
+        }
+        // call_count_down();
 
     </script>
 @endsection

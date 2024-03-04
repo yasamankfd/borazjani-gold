@@ -84,47 +84,18 @@
 <script src="{{url('/js/jquery.dataTables.min.js')}}"></script>
 
 <script>
-    function startCountdown(time , id ) {
-        now = new Date().getTime();
-        created = new Date(time).getTime();
-        let seconds = Number(((created + 120000) - now)/1000).toFixed(0) ;
-
-        var countdownValue = $('#countdownValue_' + id);
-        var countdown = $('#countdown_' + id);
-        if(seconds < 0)
-        {
-
-            countdownValue.text('');
-            countdown.text('درخواست مجدد');
-        }
-        if(seconds >= 0 ){
-            console.log(seconds)
-
-            var interval = setInterval(function () {
-                countdownValue.text(seconds);
-                seconds--;
-
-                if (seconds < 0) {
-                    clearInterval(interval);
-                    countdownValue.text('0');
-                }
-            }, 1000);
-        }
-    }
-    function yourJavaScriptFunction(row, data, dataIndex) {
-        startCountdown(data.created_at, data.id);
-    }
     $(document).ready(function() {
         // $('.select2').select2();
         let laravel_datatable;
-        let id = document.getElementById("user_id").value;
 
-        filterList(id);
+        filterList();
+        $('#products_datatable').on('draw.dt', function() {
+            call_count_down();
+        });
     });
 
-    function filterList(id) {
+    function filterList() {
         console.log("filter list")
-        console.log(id)
         laravel_datatable = $('#products_datatable').DataTable({
             processing: true,
             serverSide: true,
@@ -152,10 +123,6 @@
                 {data: 'time', name: 'time', orderable: true, searchable: false},
                 {data: 'status', name: 'status', orderable: true, searchable: false},
             ],
-            "createdRow": function (row, data, dataIndex) {
-                // Call your JavaScript function with arguments here
-                yourJavaScriptFunction(row, data, dataIndex);
-            },
             "columnDefs": [
                 { className: "border-l pl-5  md:w-[20%] text-center w-36 min-w-fit font-normal tracking-tight text-sm", "targets": [ 0 ] },
                 { className: "oneLine text-lengh w-36 md:w-[15%] text-center border-l font-normal tracking-tight text-base", "targets": [ 1 ] },
@@ -192,6 +159,56 @@
         });
 
     }
+    function call_count_down()
+    {
+        // Find all elements with the class 'your-class'
+        var elements = document.getElementsByClassName('count_down');
+
+// Use for loop to iterate over the HTMLCollection
+        console.log(elements)
+        for (var i = 0; i < elements.length; i++) {
+            console.log("here");
+
+            var element = elements[i];
+            var time = element.getAttribute("data-time");
+            var id = element.getAttribute("id");
+            var status = element.getAttribute("status_");
+            startCountdown(time, id,status);
+        }
+
+    }
+    function startCountdown(time, id,status) {
+        let now = new Date().getTime();
+        let created = new Date(time).getTime();
+        let seconds = Math.max(0, Math.floor((created + 120000 - now) / 1000));
+
+        console.log(id+" "+status)
+        var countdownValue = document.getElementById(id);
+
+
+        console.log(id)
+        function updateCountdown() {
+            countdownValue.textContent= seconds.toString();
+            seconds--;
+
+            if (seconds < 0) {
+                clearInterval(interval);
+                countdownValue.textContent = '0';
+            }
+        }
+
+        if (seconds >= 0 && status !== 2) {
+            console.log("success");
+            updateCountdown(); // Initial update
+            var interval = setInterval(updateCountdown, 1000);
+        } else {
+            countdownValue.textContent='';
+            document.getElementById(id+"_button").disabled = true;
+            // countdown.text('درخواست مجدد');
+        }
+
+    }
+
     // function startCountdown2(time , id) {
     //     now = new Date().getTime();
     //     created = new Date(time).getTime();
