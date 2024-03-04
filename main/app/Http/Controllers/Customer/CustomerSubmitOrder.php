@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderRequest;
 use App\Models\Orders;
 use App\Models\Products;
 use App\Models\Setting;
@@ -18,7 +19,7 @@ class CustomerSubmitOrder extends Controller
         $user_id = 1;
         return view("customer.customer_order",compact('market','products','product','type','user_id'));
     }
-    public function store(Request $request)
+    public function store(OrderRequest $request)
     {
 //        Log::debug($request);
         Orders::create([
@@ -31,7 +32,8 @@ class CustomerSubmitOrder extends Controller
             "product_id" => $request->product_id,
         ]);
         $user_id = $request->user_id;
-        return redirect()->route('customer-liveorders');
+        return response()->json(['code'=>200], 200);
+//        return redirect()->route('customer-liveorders');
 
     }
 }

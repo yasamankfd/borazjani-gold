@@ -52,7 +52,7 @@ class CustomerLiveOrdersController extends Controller
                 return '<td>' . $row->dateToJalali() . '</td>';
             })
             ->addColumn('status', function ($row) {
-                if($this->checkOrderTime($row->created_at) )
+                if($this->checkOrderTime($row->created_at) && $row->status !==2)
                 {
                     return '<td>' . '<label hidden="hidden">'.$row->status.'</label>
                  <span id="countdownValue_'.$row->id.'" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base count_down" status_="'.$row->status.'" data-time="'.$row->created_at.'" ></span></td>';

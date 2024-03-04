@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\AdminLiveOrdersController;
 use App\Http\Controllers\Admin\AdminManageCustomersController;
 use App\Http\Controllers\Admin\AdminManageUsersController;
 use App\Http\Controllers\Admin\AdminMarketChangeController;
-use App\Http\Controllers\Admin\AdminProducts;
+use App\Http\Controllers\Admin\AdminProductsController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\AdminTransactionsController;
 use App\Http\Controllers\Customer\CustomerDashboardController;
@@ -85,10 +85,10 @@ Route::get('/market-change-market-status/{status}',[AdminMarketChangeController:
 
 
 //admin products controller
-Route::get("/admin-list-products" ,[AdminProducts::class,"list_admin_products"]);
-Route::post('/product-create',[AdminProducts::class,'create_product'])->name("product-create");
-Route::get('/admin-products' , [AdminProducts::class,"index"])->name("admin-products");
-Route::get('/admin-products-market-status/{status}',[AdminProducts::class,'marketChange']);
+Route::get("/admin-list-products" ,[AdminProductsController::class,"list_admin_products"]);
+Route::post('/product-create',[AdminProductsController::class,'create_product'])->name("product-create");
+Route::get('/admin-products' , [AdminProductsController::class,"index"])->name("admin-products");
+Route::get('/admin-products-market-status/{status}',[AdminProductsController::class,'marketChange']);
 
 
 ////////////////////////////////////////////customer
@@ -117,6 +117,9 @@ Route::get('/update', [RefreshData::class,'getUpdatedData']);
 
 
 //Route::get('/order/{product}/{type}',[OrderController::class,'index']);
-Route::post('/order',[CustomerSubmitOrder::class,'store'])->name('save-temp-order');
+Route::post('/save-temp-order',[CustomerSubmitOrder::class,'store']);
 Route::get("/customer-order/{product}/{type}",[CustomerSubmitOrder::class,"index"]);
 
+
+//
+Route::get("/image/{type}/{file_name}",[AdminManageCustomersController::class,'displayImage']);

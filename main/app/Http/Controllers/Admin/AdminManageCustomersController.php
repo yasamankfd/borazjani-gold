@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\MessageNotification;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CustomerRequest;
 use App\Models\Orders;
 use App\Models\Setting;
 use App\Models\User;
@@ -11,6 +12,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class AdminManageCustomersController extends Controller
 {
@@ -66,7 +69,27 @@ class AdminManageCustomersController extends Controller
         return response()->json($user);
     }
 
-    public function create(Request $request)
+    public function displayImage($type,$file_name)
+    {
+        $path = Storage::disk('local')->exists('public/uploads/images'.'/'.$type.'/'.$file_name);
+        Log::debug('public/uploads/images'.'/'.$type.'/'.$file_name);
+        if($path) {
+            $content = Storage::get('public/uploads/images'.'/'.$type.'/'.$file_name);
+            $mime = Storage::mimeType('public/uploads/images'.'/'.$type.'/'.$file_name);
+            $response = Response::make($content, 200);
+            $response->header("Content-Type", $mime);
+            return $response;
+        } else
+        {
+            $content = Storage::get('public/images/default.jpg');
+            $mime = Storage::mimeType('public/images/default.jpg');
+            $response = Response::make($content, 200);
+            $response->header("Content-Type", $mime);
+            return $response;
+        }
+    }
+
+    public function create(CustomerRequest $request)
     {
         Log::debug($request);
 
@@ -91,7 +114,7 @@ class AdminManageCustomersController extends Controller
                 'password'=> $password,
                 'username'=> $request->modal_customer_username,
                 'lastname'=> $request->modal_customer_lname,
-                'nid'=> $request->modal_customer_serial,
+                'nid'=> $request->modal_customer_nid,
                 'phone' => $request->modal_customer_phone,
                 'nid_serial'=> $request->modal_customer_serial,
                 'code'=> $request->modal_customer_code,

@@ -1,4 +1,3 @@
-@include("includes.header")
 @extends('layout.customer')
 @section('page_title')
     سفارشات
@@ -103,7 +102,7 @@
             responsive: true,
             paging: true,
             autoWidth: false,
-            "order": [[1, "desc"]],
+            "order": [[6, "desc"]],
             ajax:({
                 url : 'customer-list-orders',
                 type : 'GET',

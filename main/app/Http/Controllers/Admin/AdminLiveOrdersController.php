@@ -53,8 +53,15 @@ class AdminLiveOrdersController extends Controller
                 return '<td>' . $row->total_price . '</td>';
             })
             ->addColumn('status', function ($row) {
-                return '<td>' . '<label hidden="hidden">'.$row->status.'</label>
+                if ($this->checkOrderTime($row->created_at) && $row->status != 2 )
+                {
+                    return '<td>' . '<label hidden="hidden">'.$row->status.'</label>
                 <span id="countdownValue_'.$row->id.'" class="bg-colorsecondry2 px-4 py-2 w-full text-white rounded-full flex max-w-fit font-extrabold text-base count_down" status_="'.$row->status.'" data-time="'.$row->created_at.'" ></span> ' . '</td>';
+                }else{
+                    return '<td>' . '<label hidden="hidden">'.$row->status.'</label>0</td>';
+
+                }
+
             })
 
             ->addColumn('type', function ($row) {
@@ -72,7 +79,7 @@ class AdminLiveOrdersController extends Controller
                 Log::debug($passedTime);
 //                $this.$this->checkOrderTime()
 
-                if ($this->checkOrderTime($row->created_at) ) {
+                if ($this->checkOrderTime($row->created_at) && $row->status != 2 ) {
                     return '<td>
                                 <form id="save_order_form" method="POST">
                                                    ' . csrf_field() . '

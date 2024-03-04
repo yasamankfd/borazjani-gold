@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CustomerEditRequest;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class CustomerProfileController extends Controller
         $user = User::find($user_id);
         return view("customer.customer_profile" ,compact("market" , "user"));
     }
-    public function create(Request $request)
+    public function create(CustomerEditRequest $request)
     {
         Log::debug($request);
 

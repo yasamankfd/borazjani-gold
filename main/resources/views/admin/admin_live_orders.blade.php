@@ -227,12 +227,13 @@
                             console.log('warning');
                         } else {
                             console.log('success');
+                            id = document.getElementById("order_id").value;
+                            var btn = document.getElementById("countdownValue_"+ id +"_button").disabled = true;
+                            var spn = document.getElementById("countdownValue_"+ id).textContent = "0";
+                            console.log(btn);
                         }
                         laravel_datatable.ajax.reload(null, false);
-                        id = document.getElementById("order_id").value;
-                        var btn = document.getElementById("countdownValue_"+ id +"_button").disabled = true;
-                        var spn = document.getElementById("countdownValue_"+ id).textContent = "0";
-                        console.log(btn);
+
                         close_modal();
                     }
                 },

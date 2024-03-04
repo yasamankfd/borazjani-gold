@@ -146,6 +146,56 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => ' نام',
+        'modal_customer_name' => ' نام',
+        'modal_user_name' => ' نام',
+
+        'lastname' => 'نام خانوادگی',
+        'modal_user_lname' => 'نام خانوادگی',
+        'modal_customer_lname' => 'نام خانوادگی',
+
+        'phone' => ' شماره تماس',
+        'modal_user_phone' => ' شماره تماس',
+        'modal_customer_phone' => ' شماره تماس',
+
+        'modal_customer_nid' => ' کد ملی',
+        'modal_user_nid' => ' کد ملی',
+        'nid' => ' کد ملی',
+
+        'modal_user_pass' => 'رمز عبور',
+        'modal_customer_pass' => 'رمز عبور',
+
+
+        'modal_user_status'=>' وضعیت ',
+
+        'modal_customer_code'=>' کد مالیاتی ',
+        'modal_customer_serial'=>' سریال کارت ملی ',
+        'modal_physio_areas'=>' ناحیه ',
+        'modal_physio_num_sessions'=>'',
+        'modal_physio_date'=>'  تاریخ ',
+        'modal_physio_types'=>' نوع ',
+        'modal_prescription_nationalCode'=>' کد ملی ',
+        'modal_prescription_phone'=>' شماره تماس ',
+        'modal_prescription_date'=>' تاریخ ',
+        'modal_prescription_medicines'=>' دارو ',
+        'modal_prescription_description'=>' توضیحات ',
+        'modal_payment_nationalCode'=>' کد ملی ',
+        'modal_payment_name'=>' نام ',
+        'modal_payment_phone'=>' شماره تماس ',
+        'modal_payment_number'=>' شماره ',
+        'modal_payment_amount'=>' مبلغ ',
+        'modal_payment_date'=>' تاریخ ',
+        'modal_payment_description'=>' توضیحات ',
+        'modal_sick_nationalCode'=>' کد ملی ',
+        'modal_sick_name'=>' نام ',
+        'modal_sick_phone'=>' شماره تماس ',
+        'modal_sick_description'=>' توضیحات ',
+        'modal_sick_date'=>' تاریخ ',
+        'modal_sick_sdate'=>' تاریخ شروع ',
+        'modal_sick_edate'=>' تایخ پایان ',
+        'description' => ' توضیحات ',
+        'date' => ' تاریخ ',
+    ],
 
 ];

@@ -1,5 +1,5 @@
 @extends("layout.customer")
-@include("includes.header")
+@include("alert.alert-error")
 @section("title")
     پروفایل
 @endsection
@@ -168,14 +168,36 @@
                         } else {
                             console.log('success');
                         }
-                        laravel_datatable.ajax.reload(null, false);
-                        close_modal();
+                        // laravel_datatable.ajax.reload(null, false);
+                        // close_modal();
                     }
                 },
                 error: function (response) {
-                    handleErrorResponse(response);
+                    if (response.status === 422) {
+                        var response = JSON.parse(response.responseText);
+                        var errorString = '<ul>';
+                        $.each(response.errors, function (key, value) {
+                            errorString += '<li>' + value + '</li>';
+                        });
+                        errorString += '</ul>';
+                        showAlert(errorString, 'error');
+                    }
+                    if (response.status == 500) {
+                        var response = JSON.parse(response.responseText);
+                        showAlert(response.responseText, 'error');
+                    }
+                    if (response.status == 400) {
+                        showAlert('خطا در برقراری ارتباط', 'error');
+                    }
                 }
             });
+        }
+        function showAlert(text, type) {
+            $('#alert_content_' + type).html(text);
+            $('#alert-' + type).removeClass("hidden");
+            setTimeout(function () {
+                $('#alert-' + type).addClass("hidden");
+            }, 3000);
         }
     </script>
 @endsection

@@ -1,6 +1,6 @@
-
 @include('includes.header')
 <body class="font-yekan bg-gray-100 sm:bg-transparent">
+<input type="hidden" id="base_url" value="{{ url('/') }}">
 <!-- ------------------sidebar------------------- -->
 <div x-data="{ toggle:true }" :class="!toggle ? 'w-20' : 'w-72' " class="hidden sm:block navigation text-white bg-colorprimary py-5">
     <span x-show="toggle" class="flex flex-col items-center justify-center border-b pb-2 border-[#676767]">

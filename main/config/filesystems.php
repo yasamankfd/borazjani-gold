@@ -46,6 +46,8 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
+//            'url' => env('APP_URL').'/storage',
+            'visibility' => 'private',
         ],
 
         'public' => [
@@ -55,6 +57,13 @@ return [
             'visibility' => 'public',
         ],
 
+//        'public' => [
+//            'driver' => 'local',
+//            'root' => public_path(),
+//            'url' => env('APP_URL').'/public',
+//            'visibility' => 'public',
+//        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -63,6 +72,11 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
+        ],
+
+        'uploads' => [
+            'driver' => 'local',
+            'root'   => public_path(), // previously storage_path();
         ],
 
     ],
@@ -79,7 +93,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        base_path('/public_html/storage') => storage_path('app/public'),
     ],
 
 ];

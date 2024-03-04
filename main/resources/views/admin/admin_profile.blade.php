@@ -1,5 +1,5 @@
 @extends("layout.admin")
-@include("includes.header")
+@include("alert.alert-error")
 @section("title")
     پروفایل
 @endsection
@@ -71,7 +71,7 @@
                                 <span class="w-full lg:w-1/4">
                                     <span class="pr-5 font-light text-sm">تکرار رمز عبور</span>
                                     <span class="flex items-center gap-2 rounded-full w-full border border-gray-200">
-                                        <input type="text" name="re-password" class="text-sm font-extralight border-none flex-1 bg-transparent focus:ring-colorsecondry1 rounded-full placeholder:font-thin text-center placeholder:text-sm px-5 py-3" placeholder="تکرار رمز عبور را وارد کنید">
+                                        <input type="text" id="re_password" name="re_password" class="text-sm font-extralight border-none flex-1 bg-transparent focus:ring-colorsecondry1 rounded-full placeholder:font-thin text-center placeholder:text-sm px-5 py-3" placeholder="تکرار رمز عبور را وارد کنید">
                                     </span>
                                 </span>
                             </span>
@@ -127,6 +127,22 @@
                 },
                 error: function (response) {
                     console.log(response);
+                    if (response.status === 422) {
+                        var response = JSON.parse(response.responseText);
+                        var errorString = '<ul>';
+                        $.each(response.errors, function (key, value) {
+                            errorString += '<li>' + value + '</li>';
+                        });
+                        errorString += '</ul>';
+                        showAlert(errorString, 'error');
+                    }
+                    if (response.status == 500) {
+                        var response = JSON.parse(response.responseText);
+                        showAlert(response.responseText, 'error');
+                    }
+                    if (response.status == 400) {
+                        showAlert('خطا در برقراری ارتباط', 'error');
+                    }
                 }
             });
         }
@@ -152,6 +168,13 @@
                     console.log(response)
                 }
             });
+        }
+        function showAlert(text, type) {
+            $('#alert_content_' + type).html(text);
+            $('#alert-' + type).removeClass("hidden");
+            setTimeout(function () {
+                $('#alert-' + type).addClass("hidden");
+            }, 3000);
         }
     </script>
 @endsection

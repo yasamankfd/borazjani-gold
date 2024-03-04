@@ -1,4 +1,5 @@
 @extends('layout.customer')
+@include("alert.alert-error")
 @section('page_title')
     ثبت سفارش
 @endsection
@@ -39,9 +40,6 @@
                                         @else
                                             <p id="operation_label" class="font-light animate-pulse text-sm md:text-lg leading-6 md:leading-7 text-center">فروش</p>
                                         @endif
-
-{{--                                        <p id="operation_label" class="font-light animate-pulse text-sm md:text-lg leading-6 md:leading-7 text-center">--}}
-{{--                                        </p>--}}
                                         <p class="font-light animate-pulse text-sm md:text-lg leading-6 md:leading-7 text-center">
                                              هستید
                                         </p>
@@ -49,9 +47,8 @@
                             </div>
                             <!-- -------------------------- نمایش اطلاعیه ---------------------------  -->
 
-                            <form x-show="buy" class="mt-5" action="{{ route('save-temp-order') }}" method="POST">
+                            <form id="create_order_form" x-show="buy" class="mt-5">
                                 @csrf
-                                @method('POST')
                                 <input type="hidden" id="product_id" name="product_id" value="{{ $product->id }}">
                                 <input type="hidden" id="product_fee" name="product_fee" value="@if($type=="buy") {{ $product->buy_price }} @else {{ $product->sell_price }} @endif">
                                 <input type="hidden" id="operation_type" name="operation_type" value="{{ $type }}">
@@ -113,11 +110,11 @@
                                         </span>
                                     </span>
                                 </span>
-                                <span class="w-full  max-w-xl mx-auto flex items-center justify-center gap-2 border-t mt-5 pt-2">
-                                    <button name="submit_buy_order" id="submit_buy_order" @if($market == "closed" || $product->buy_status == 0) disabled @endif  class="flex justify-center bg-colorfourth1 text-white w-full rounded-xl py-3 @if($type == "sell") hidden @endif "> ثبت خرید</button>
-                                    <button name="submit_sell_order" id="submit_sell_order" @if($market == "closed" || $product->sell_status == 0) disabled @endif class="flex justify-center bg-colorthird1 text-white w-full rounded-xl py-3 @if($type == "buy") hidden @endif">ثبت فروش</button>
-                                </span>
                             </form>
+                            <span class="w-full  max-w-xl mx-auto flex items-center justify-center gap-2 border-t mt-5 pt-2">
+                                <button onclick="create_order()" name="submit_buy_order" id="submit_buy_order" @if($market == "closed" || $product->buy_status == 0) disabled @endif  class="flex justify-center bg-colorfourth1 text-white w-full rounded-xl py-3 @if($type == "sell") hidden @endif "> ثبت خرید</button>
+                                <button onclick="create_order()" name="submit_sell_order" id="submit_sell_order" @if($market == "closed" || $product->sell_status == 0) disabled @endif class="flex justify-center bg-colorthird1 text-white w-full rounded-xl py-3 @if($type == "buy") hidden @endif">ثبت فروش</button>
+                            </span>
                         </div>
                     </span>
             </div>
@@ -125,10 +122,69 @@
     </div>
 @endsection
 @section('scripts')
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="{{ url("/js/menutoggle.js")}}"></script>
 <script src="{{ url("/js/menu-toggle.js")}}"></script>
 <script src="{{ asset('js/order_page.js') }}"></script>
-<script src="{{ asset('js/app.js') }}"></script>
 
+
+<script>
+    function create_order()
+    {
+
+        // let formData = new FormData(document.getElementById('create_product_form'));
+        base_url = document.getElementById("base_url").value;
+        let _url        = base_url+'/save-temp-order';
+        let formData    = new FormData($("#create_order_form")[0]);
+        console.log(formData)
+
+        $.ajax({
+            type:'POST',
+            url: _url,
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.code === 200) {
+                    if (response.id != null) {
+                        console.log("warning");
+                    } else {
+                        console.log("success");
+                    }
+                    window.location.href = '{{ route("customer-liveorders") }}';
+                }
+            },
+            error: function (response) {
+                console.log(response);
+                if (response.status === 422) {
+                    var response = JSON.parse(response.responseText);
+                    var errorString = '<ul>';
+                    $.each(response.errors, function (key, value) {
+                        errorString += '<li>' + value + '</li>';
+                    });
+                    errorString += '</ul>';
+                    showAlert(errorString, 'error');
+                }
+                if (response.status == 500) {
+                    var response = JSON.parse(response.responseText);
+                    showAlert(response.responseText, 'error');
+                }
+                if (response.status == 400) {
+                    showAlert('خطا در برقراری ارتباط', 'error');
+                }
+            }
+        });
+    }
+
+    function showAlert(text, type) {
+        $('#alert_content_' + type).html(text);
+        $('#alert-' + type).removeClass("hidden");
+        setTimeout(function () {
+            $('#alert-' + type).addClass("hidden");
+        }, 3000);
+    }
+
+</script>
 @endsection
 
